@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "langchain-test-gen-docs"
+version = "0.1.0"
+description = "FastAPI RAG Pipeline for QA Test Generation"
+authors = ["AI <ai@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.15"
+fastapi = "^0.115.0"
+uvicorn = "^0.34.0"
+python-multipart = "^0.0.18"
+pydantic = "^2.9.0"
+psycopg2-binary = "^2.9.9"
+qdrant-client = "^1.12.0"
+langchain = "^0.2.0"
+langchain-core = "^0.2.0"
+langchain-text-splitters = "^0.2.0"
+langchain-mistralai = "^0.1.0"
+langchain-openai = "^0.1.0"
+langchain-anthropic = "^0.1.0"
+langchain-community = "^0.2.0"
+jira = "^3.8.0"
+python-dotenv = "^1.0.1"
+pandas = "^2.2.3"
+openpyxl = "^3.1.5"
+requests = "^2.32.0"
+pyyaml = "^6.0"
+ragas = ">=0.2.0,<0.3.0"
+datasets = "^3.1.0"
+prometheus-fastapi-instrumentator = "^7.0.0"
+cryptography = "^43.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

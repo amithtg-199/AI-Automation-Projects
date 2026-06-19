@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: qa-rag-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qa-rag-api
+  template:
+    metadata:
+      labels:
+        app: qa-rag-api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.images.api }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          ports:
+            - containerPort: 5679
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-config
+            - secretRef:
+                name: {{ .Release.Name }}-secrets
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: qa-rag-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5679
+      targetPort: 5679
+  selector:
+    app: qa-rag-api
