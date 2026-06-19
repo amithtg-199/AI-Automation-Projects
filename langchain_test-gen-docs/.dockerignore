@@ -1,0 +1,26 @@
+# Virtual Environments
+.venv/
+venv/
+env/
+
+# Output and Data Directories
+output_documents/
+logs/
+postgres_data/
+qdrant_data/
+ollama_data/
+
+# Cache and temporary files
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+.DS_Store
+
+# Sensitive and source control
+.env
+.env.*
+.git/
+
+# Input Data
+input_documents/
