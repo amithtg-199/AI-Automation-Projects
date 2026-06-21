@@ -132,9 +132,8 @@ The testset is a simple two-column CSV file:
 question,ground_truth
 "What is the system timeout?","The system timeout is 30 seconds."
 "How are documents processed?","Through Docling/Unstructured and saved to Postgres/Qdrant."
-
-<img width="1306" height="210" alt="1000084253" src="https://github.com/user-attachments/assets/a77be0e4-8f70-4340-b419-2726041a5ad1" />
 ```
+<img width="1306" height="210" alt="1000084253" src="https://github.com/user-attachments/assets/a77be0e4-8f70-4340-b419-2726041a5ad1" />
 
 ### 1. Synthetic Evaluation (Default)
 By default, triggering the `evaluate` action will prompt the LLM to generate a synthetic test dataset of questions and ground truths from your ingested document chunks (via `RagasEvaluator.generate_synthetic_dataset`), save it to `logs/testset_<project_name>.csv`, and then run evaluation against them. The system requires **RAGAS >= 0.2.0** and also maintains backward compatibility with 0.1.x APIs for the synthetic testset generator.
