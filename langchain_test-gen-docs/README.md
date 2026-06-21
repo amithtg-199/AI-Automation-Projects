@@ -59,6 +59,8 @@ The Main API forwards these files to the **Extraction Service**, which utilizes 
 - **Parent Chunks:** Large blocks of text (2000 tokens) stored in a relational **PostgreSQL** database.
 - **Child Chunks:** Smaller blocks of text (400 tokens) mapped back to Parent Chunks, converted to vectors, and stored in **Qdrant**.
 
+<img width="1537" height="765" alt="1000084252" src="https://github.com/user-attachments/assets/6399ebca-7d80-4e4f-a567-cfb1e3cee3aa" />
+
 ### 3. Two-Phase Chained Generation (`retrieval.py`)
 To prevent hallucination while maximizing detail, the system uses a chained generation pipeline:
 1. **Phase 1 — Test Plan + Test Cases (parallel):** Extracts ALL Parent Chunks from Postgres iteratively (100% coverage, bypassing vector loss) and generates both `test_plan.md` and `test_cases.csv` directly from raw requirements. Both run independently against the full source data so test cases retain maximum granularity (all steps, requirement mappings, edge cases).
@@ -88,6 +90,10 @@ All LLM calls are routed through an adaptive rate limiter that:
 - On HTTP 429 / rate-limit errors: doubles the delay (capped at 60s) and retries up to `LLM_MAX_RETRIES` times.
 - On success: halves the delay back toward the baseline, so paid tiers quickly converge to near-zero wait.
 - All pacing decisions are logged transparently to `logs/rag_pipeline.log`.
+
+<img width="1149" height="465" alt="1000084254" src="https://github.com/user-attachments/assets/2b638487-4907-4801-8528-c16c986a29d8" />
+
+<img width="1231" height="224" alt="1000084255" src="https://github.com/user-attachments/assets/6960aebb-a413-4ea0-bcf5-62a3346c01af" />
 
 ---
 
@@ -126,6 +132,8 @@ The testset is a simple two-column CSV file:
 question,ground_truth
 "What is the system timeout?","The system timeout is 30 seconds."
 "How are documents processed?","Through Docling/Unstructured and saved to Postgres/Qdrant."
+
+<img width="1306" height="210" alt="1000084253" src="https://github.com/user-attachments/assets/a77be0e4-8f70-4340-b419-2726041a5ad1" />
 ```
 
 ### 1. Synthetic Evaluation (Default)
