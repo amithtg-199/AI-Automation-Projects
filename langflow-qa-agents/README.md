@@ -11,7 +11,10 @@ This directory contains a suite of **5 production-grade Langflow Agent Pipelines
    - [3. RCA Bot](#3-rca-bot)
    - [4. Test Case Generator](#4-test-case-generator)
    - [5. Test Plan Creator](#5-test-plan-creator)
-2. [🐳 Docker Setup & Local Deployment](#-docker-setup--local-deployment)
+2. [🔑 Configuration & JIRA Integration](#-configuration--jira-integration)
+   - [Adding Atlassian API Keys](#adding-atlassian-api-keys)
+   - [Project Name Isolation in Test Case Generator](#project-name-isolation-in-test-case-generator)
+3. [🐳 Docker Setup & Local Deployment](#-docker-setup--local-deployment)
    - [Docker Run Command](#docker-run-command)
    - [Volume Mount Requirements for Custom Components](#volume-mount-requirements-for-custom-components)
    - [Configuring Custom Export Paths](#configuring-custom-export-paths)
@@ -118,7 +121,54 @@ This directory contains a suite of **5 production-grade Langflow Agent Pipelines
 
       J_Writer --> Output1[Chat Output 1]
       Doc_Writer --> Output2[Chat Output 2]
-  ```
+   ```
+
+---
+
+## 🔑 Configuration & JIRA Integration
+
+### Adding Atlassian API Keys
+To allow the **Bug Triage**, **RCA Bot**, **Test Case Generator**, and **Test Plan Creator** agents to pull tickets directly from JIRA, you must provide your Atlassian credentials using **JIRA Basic Authentication** (which utilizes a Base64-encoded string of your email and API token).
+
+1. **Generate an API Token**:
+   * Go to [Atlassian API Tokens Console](https://id.atlassian.com/manage-profile/security/api-tokens).
+   * Click **Create API Token**, enter a label, and copy the generated token.
+2. **Configure JIRA Authentication in Langflow**:
+   You can configure JIRA authentication in the **API Request** component using either of the following two options:
+
+   #### Option A: Configured in Headers Table (Recommended)
+   In the **API Request** component, click on **Headers** and add/edit the following entry:
+   * **Header**: `Authorization`
+   * **Value**: `Basic <base64_encoded_credentials>`
+
+   > [!NOTE]
+   > `<base64_encoded_credentials>` is the Base64 representation of `your_email@domain.com:YOUR_ATLASSIAN_API_TOKEN`.
+   >
+   > You can generate this base64 string using:
+   > * **Python**: `import base64; print(base64.b64encode(b"email:token").decode())`
+   > * **Bash (Linux/macOS)**: `echo -n "email:token" | base64`
+   > * **PowerShell (Windows)**: `[Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("email:token"))`
+
+   #### Option B: Configured via cURL command input
+   If the API Request component is initialized using a `cURL` input field, use the `-u` auth parameter:
+   ```bash
+   -u "your_jira_email@domain.com:YOUR_ATLASSIAN_API_TOKEN"
+   ```
+   *(cURL automatically translates the `-u` flag into the `Authorization: Basic <base64>` header under the hood).*
+
+---
+
+### Project Name Isolation in Test Case Generator
+The **Test Case Generator** agent contains a custom component called **Multi-File Writer** with a `project_name` parameter. This parameter enables workspace isolation for generated tests:
+
+1. **Locate the Input**: In the Langflow Playground/UI, look for the **Project Name** parameter.
+2. **Set a Custom Name**:
+   * Change it from the default `"DefaultProject"` or empty value to your specific workspace directory (e.g. `MyProject`).
+   * The custom component sanitizes this name and creates a distinct folder for it:
+     `/app/langflow/exports/MyProject/`
+   * On your local host, files will be synced to:
+     `./langflow-data/exports/MyProject/`
+3. **Why it matters**: This prevents the agent from overwriting existing files in the root exports folder when generating a new framework or target test suite.
 
 ---
 
