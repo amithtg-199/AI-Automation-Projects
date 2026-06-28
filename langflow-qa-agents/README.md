@@ -1,6 +1,6 @@
 # 🚀 QA Automation Langflow Agents Directory
 
-This directory contains a suite of **5 production-grade Langflow Agent Pipelines** designed to automate critical phases of the Quality Assurance and Software Development lifecycle. They enable rapid generation of test suites, test plan documentation, flaky test analysis, bug triaging, and Root Cause Analysis (RCA).
+This directory contains a suite of **6 production-grade Langflow Agent Pipelines and Validation Tools** designed to automate critical phases of the Quality Assurance and Software Development lifecycle. They enable rapid generation of test suites, test plan documentation, flaky test analysis, bug triaging, contract validation, and Root Cause Analysis (RCA).
 
 ---
 
@@ -11,6 +11,7 @@ This directory contains a suite of **5 production-grade Langflow Agent Pipelines
    - [3. RCA Bot](#3-rca-bot)
    - [4. Test Case Generator](#4-test-case-generator)
    - [5. Test Plan Creator](#5-test-plan-creator)
+   - [6. JSON Schema Validator](#6-json-schema-validator)
 2. [🔑 Configuration & JIRA Integration](#-configuration--jira-integration)
    - [Adding Atlassian API Keys](#adding-atlassian-api-keys)
    - [Project Name Isolation in Test Case Generator](#project-name-isolation-in-test-case-generator)
@@ -122,6 +123,19 @@ This directory contains a suite of **5 production-grade Langflow Agent Pipelines
       J_Writer --> Output1[Chat Output 1]
       Doc_Writer --> Output2[Chat Output 2]
    ```
+
+---
+
+### 6. JSON Schema Validator (`JSON-Schema-Validator.json`)
+* **Purpose**: Validates JSON payloads (supporting raw JSON strings, JSON Lines/JSONL, directory folders containing multiple JSON files, or URL endpoints) against a given JSON Schema. Built with multi-threaded workers to support high-performance batch validation.
+* **Core Flow & Design**:
+  ```mermaid
+  graph LR
+      ChatInput[Chat Input: Payload Path/Content/URL] --> Validator[JSON Schema Validator: Custom Component]
+      Validator --> ChatOutput[Chat Output: Markdown Report / JSON Results]
+  ```
+* **Key Components**:
+  - **JSON Schema Validator (Custom Component)**: Intelligently loads and parses the target JSON Schema (from a raw string, local file, or remote URL) and validates payloads against it using draft-07/2020-12 rules. It supports parallel execution workers to scale up validation across large datasets. Requires the `jsonschema` Python package (`pip install jsonschema`).
 
 ---
 
