@@ -1,0 +1,10 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'qa-rag-api'
+    static_configs:
+      - targets: ['qa-rag-api:5679']
+  - job_name: 'extraction-service'
+    static_configs:
+      - targets: ['extraction-service:8000']

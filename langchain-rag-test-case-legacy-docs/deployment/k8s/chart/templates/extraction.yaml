@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-extraction
+  labels:
+    app: qa-rag-extraction
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qa-rag-extraction
+  template:
+    metadata:
+      labels:
+        app: qa-rag-extraction
+    spec:
+      containers:
+        - name: extraction
+          image: {{ .Values.images.extraction }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          ports:
+            - containerPort: 8000
+          livenessProbe:
+            exec:
+              command:
+                - python
+                - -c
+                - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: 2000m
+              memory: 4Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-extraction
+  labels:
+    app: qa-rag-extraction
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 8000
+  selector:
+    app: qa-rag-extraction
