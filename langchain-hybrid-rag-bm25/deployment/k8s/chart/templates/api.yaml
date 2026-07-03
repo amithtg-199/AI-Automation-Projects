@@ -1,0 +1,110 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: qa-rag-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: qa-rag-api
+  template:
+    metadata:
+      labels:
+        app: qa-rag-api
+    spec:
+      containers:
+        - name: api
+          image: {{ .Values.images.api }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          ports:
+            - containerPort: 5679
+          envFrom:
+            - configMapRef:
+                name: {{ .Release.Name }}-config
+            - secretRef:
+                name: {{ .Release.Name }}-secrets
+          volumeMounts:
+            - name: api-logs
+              mountPath: /app/logs
+            - name: api-outputs
+              mountPath: /app/output_documents
+            - name: api-inputs
+              mountPath: /app/input_documents
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+      volumes:
+        - name: api-logs
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-api-logs
+        - name: api-outputs
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-api-outputs
+        - name: api-inputs
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-api-inputs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-api-logs
+  labels:
+    app: qa-rag-api
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.apiLogsSize }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-api-outputs
+  labels:
+    app: qa-rag-api
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.apiOutputsSize }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Release.Name }}-api-inputs
+  labels:
+    app: qa-rag-api
+spec:
+  accessModes: [ "ReadWriteOnce" ]
+  {{- if .Values.persistence.storageClass }}
+  storageClassName: {{ .Values.persistence.storageClass | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.persistence.apiInputsSize }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-api
+  labels:
+    app: qa-rag-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5679
+      targetPort: 5679
+  selector:
+    app: qa-rag-api

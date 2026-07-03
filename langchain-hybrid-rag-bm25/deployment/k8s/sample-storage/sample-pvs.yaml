@@ -1,0 +1,71 @@
+# Sample PersistentVolume (PV) definitions for Bare-Metal / Local K8s Clusters (WSL / Minikube / Docker Desktop / k3s)
+# Note: If you deploy to AWS EKS, Azure AKS, or GCP GKE, you DO NOT need this file! Cloud providers provision PVs automatically.
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-postgres-data
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual-local
+  hostPath:
+    path: "/mnt/k8s-storage/postgres"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-qdrant-data
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual-local
+  hostPath:
+    path: "/mnt/k8s-storage/qdrant"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-api-logs
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual-local
+  hostPath:
+    path: "/mnt/k8s-storage/logs"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-api-outputs
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual-local
+  hostPath:
+    path: "/mnt/k8s-storage/outputs"
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-api-inputs
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: manual-local
+  hostPath:
+    path: "/mnt/k8s-storage/inputs"

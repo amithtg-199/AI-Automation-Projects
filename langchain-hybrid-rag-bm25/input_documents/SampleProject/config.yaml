@@ -1,0 +1,8 @@
+# Per-project folder pooling & segmentation configuration
+folders:
+  - path: "prd"
+    action: "ingest"
+    description: "Product Requirement Documents and Specifications"
+  - path: "jira"
+    action: "ingest"
+    description: "Exported Jira Stories and Epics"

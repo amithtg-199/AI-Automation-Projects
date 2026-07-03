@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-config
+  labels:
+    app: qa-rag-pipeline
+data:
+  POSTGRES_USER: {{ .Values.config.postgresUser | quote }}
+  POSTGRES_DB: {{ .Values.config.postgresDb | quote }}
+  POSTGRES_HOST: {{ .Release.Name }}-postgres
+  POSTGRES_PORT: "5432"
+  QDRANT_HOST: {{ .Release.Name }}-qdrant
+  QDRANT_PORT: {{ .Values.config.qdrantPort | quote }}
+  EXTRACTION_SERVICE_URL: "http://{{ .Release.Name }}-extraction:8000"
+  EMBEDDING_DIMENSION: {{ .Values.config.embeddingDimension | quote }}
+  PARENT_CHUNK_SIZE: {{ .Values.config.parentChunkSize | quote }}
+  PARENT_CHUNK_OVERLAP: {{ .Values.config.parentChunkOverlap | quote }}
+  CHILD_CHUNK_SIZE: {{ .Values.config.childChunkSize | quote }}
+  CHILD_CHUNK_OVERLAP: {{ .Values.config.childChunkOverlap | quote }}
+  GENERATION_BATCH_SIZE: {{ .Values.config.generationBatchSize | quote }}
+  GENERATION_BATCH_DELAY: {{ .Values.config.generationBatchDelay | quote }}
+  EVAL_BATCH_SIZE: {{ .Values.config.evalBatchSize | quote }}
+  EVAL_DELAY_SECONDS: {{ .Values.config.evalDelaySeconds | quote }}
+  LLM_MAX_RETRIES: {{ .Values.config.llmMaxRetries | quote }}
+  LLM_REQUEST_TIMEOUT: {{ .Values.config.llmRequestTimeout | quote }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-schema
+  labels:
+    app: qa-rag-postgres
+data:
+  schema.sql: |-
+{{ .Files.Get "files/schema.sql" | indent 4 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-prometheus-config
+  labels:
+    app: qa-rag-prometheus
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: {{ .Values.monitoring.scrapeInterval }}
+
+    scrape_configs:
+      - job_name: 'qa-rag-api'
+        static_configs:
+          - targets: ['{{ .Release.Name }}-api:5679']
+      - job_name: 'extraction-service'
+        static_configs:
+          - targets: ['{{ .Release.Name }}-extraction:8000']
