@@ -257,12 +257,15 @@ The API Orchestrator automatically tracks and exposes live Prometheus metrics at
 - **Evaluation Metrics:** `rag_evaluation_questions_generated_total`, `rag_evaluation_faithfulness_score`, `rag_evaluation_answer_relevancy_score`, `rag_evaluation_context_precision_score`, `rag_evaluation_context_recall_score`
 
 Ingestion Dashboard:
+
 <img width="512" height="314" alt="image" src="https://github.com/user-attachments/assets/d90bcec7-d03c-4df9-9acb-3f0ff4782476" />
 
 Generation & Token Utilization Dashboard:
+
 <img width="512" height="209" alt="image" src="https://github.com/user-attachments/assets/601309d5-ba46-43f1-a50f-31f212d3139c" />
 
-RAGAS Eval (Set of 360 Question with Ground Truth)
+RAGAS Eval (Set of 360 Question with Ground Truth):
+
 <img width="512" height="227" alt="image" src="https://github.com/user-attachments/assets/0a04915b-53b9-4d1b-9746-0c60238561a8" />
 
 
