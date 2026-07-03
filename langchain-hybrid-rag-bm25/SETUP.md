@@ -595,8 +595,12 @@ docker compose up -d
 ```
 
 ### Step 2: Place Source Documents & Jira IDs
-Create a folder inside `input_documents/` named after your project (e.g. `MyProject`):
-- **PRDs & Diagrams:** Place all PDF, DOCX, PNG, JPG, or JPEG requirement documents inside `input_documents/MyProject/prd/`. Docling OCR automatically parses both text layouts and visual architecture diagrams.
+> [!IMPORTANT]
+> **Directory Setup (`SampleProject` Replacement)**
+> The repository ships with template directory structures under `input_documents/SampleProject/` and `eval_datasets/SampleProject/`. Before running ingestion or triggering webhooks, **replace `SampleProject` with your exact project name** matching the `"project_name"` sent in your API/webhook payload (or `DEFAULT_PROJECT_NAME` in `.env`).
+
+Create a folder inside `input_documents/` named after your project (e.g. `BillingModule` matching your webhook `"project_name"`):
+- **PRDs & Diagrams:** Place all PDF, DOCX, PNG, JPG, or JPEG requirement documents inside `input_documents/BillingModule/prd/`. Docling OCR automatically parses both text layouts and visual architecture diagrams.
 - **Jira Tickets:** Place your target Jira ticket IDs (one per line) inside `input_documents/MyProject/jira/jira_id.txt`:
   ```text
   PROJ-101

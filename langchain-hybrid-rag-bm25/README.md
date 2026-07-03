@@ -74,14 +74,15 @@ You can swap LLM and Embedding models instantly via `.env` variables without alt
 ### 1. Ingestion & Extraction (`scripts/ingestion/pipeline.py`)
 Triggered via an API webhook, the ingestion pipeline reads documents from the project's input directory structure:
 
-<img width="512" height="247" alt="image" src="https://github.com/user-attachments/assets/fa8b422d-5fe2-4c0f-b50b-7c29b2090c86" />
-
-
 #### Dynamic Input Folder Structure & `config.yaml`
+> [!IMPORTANT]
+> **Replacing `SampleProject` with Actual Webhook `project_name`**
+> The repository ships with skeleton template directories under `input_documents/SampleProject/` and `eval_datasets/SampleProject/`. When running ingestion or triggering API webhooks for your real project, you **must replace `SampleProject` (or `<project_name>`) with your exact project name** matching the `"project_name"` sent in your API/webhook payload (or your `DEFAULT_PROJECT_NAME` in `.env`). For example, if your webhook triggers `"project_name": "BillingModule"`, create and place your input files under `input_documents/BillingModule/`.
+
 Users can create any number of custom input folders under `input_documents/<project_name>/`. The ingestion pipeline dynamically pools and processes all documents inside folders listed in `config.yaml`:
 ```text
 input_documents/
-└── <project_name>/
+└── <project_name>/ (e.g. BillingModule or SampleProject)
     ├── prd/
     │   ├── architecture_spec.pdf
     │   └── system_requirements.docx
@@ -140,15 +141,6 @@ Every RAGAS evaluation run and generation output is logged to PostgreSQL (`evalu
 ## Evaluation Framework (RAGAS)
 
 The system includes a built-in evaluation framework powered by **RAGAS** to score the quality of retrieved contexts and generated answers. The evaluator lives in `scripts/evaluation/pipeline.py` and is orchestrated by `init/main.py`.
-
-RAGAS Eval:
-
-<img width="512" height="134" alt="image" src="https://github.com/user-attachments/assets/85ba47f5-14ea-4429-a94e-a383a39db208" />
-
-Human In-Loop Feedback:
-
-<img width="512" height="44" alt="image" src="https://github.com/user-attachments/assets/db4e06b8-8a4b-4d78-9386-41270a592023" />
-
 
 ### How It Works (Adaptive Batching Design & Scaling)
 
@@ -256,19 +248,6 @@ The API Orchestrator automatically tracks and exposes live Prometheus metrics at
 - **Token Utilization & Cost Metrics:** `rag_llm_prompt_tokens_total`, `rag_llm_completion_tokens_total`, `rag_llm_cost_usd_total`
 - **Evaluation Metrics:** `rag_evaluation_questions_generated_total`, `rag_evaluation_faithfulness_score`, `rag_evaluation_answer_relevancy_score`, `rag_evaluation_context_precision_score`, `rag_evaluation_context_recall_score`
 
-Ingestion Dashboard:
-
-<img width="512" height="314" alt="image" src="https://github.com/user-attachments/assets/d90bcec7-d03c-4df9-9acb-3f0ff4782476" />
-
-Generation & Token Utilization Dashboard:
-
-<img width="512" height="209" alt="image" src="https://github.com/user-attachments/assets/601309d5-ba46-43f1-a50f-31f212d3139c" />
-
-RAGAS Eval (Set of 360 Question with Ground Truth):
-
-<img width="512" height="227" alt="image" src="https://github.com/user-attachments/assets/0a04915b-53b9-4d1b-9746-0c60238561a8" />
-
-
 ### 2. Comprehensive Action Logging
 The pipeline outputs clear, structured logs at every step:
 - **BM-25 Indexing:** Explicit log confirming when each Parent Chunk is indexed into PostgreSQL full-text `search_vector` (`to_tsvector`).
@@ -296,10 +275,6 @@ The workflow features granular checkpointing across all execution phases so inte
    - **Incomplete Run Checkpointing (Resume Mode):** If execution stops halfway through (e.g. Phase 1 completed, but only 2 out of 6 Phase 2 downstream documents were generated before an interruption or restart), the system detects the existing files, logs `[Checkpoint] Execution stopped in middle of previous run... Resuming workflow from last completed checkpoint`, skips generating existing files, and completes only the missing artifacts.
    - **Completed Run Re-Generation:** If all 8 documents exist in `vX` (Phase 1 + Phase 2 completed), triggering generation creates a brand new version folder (`vX+1`) for a clean, fresh re-generation run.
 3. **Evaluation Checkpoint (`retrieval_cache_<project>.json`):** During RAGAS grading, generated answers are cached to disk every 5 items. If evaluation is interrupted or rate-limited (`429`), re-running evaluation resumes immediately from disk cache.
-
-Generated Documents:
-
-<img width="512" height="185" alt="image" src="https://github.com/user-attachments/assets/a9f4bccf-88b5-472b-8ff6-2b2dcda64cbb" />
 
 ---
 
