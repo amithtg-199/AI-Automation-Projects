@@ -298,6 +298,7 @@ The workflow features granular checkpointing across all execution phases so inte
 3. **Evaluation Checkpoint (`retrieval_cache_<project>.json`):** During RAGAS grading, generated answers are cached to disk every 5 items. If evaluation is interrupted or rate-limited (`429`), re-running evaluation resumes immediately from disk cache.
 
 Generated Documents:
+
 <img width="512" height="185" alt="image" src="https://github.com/user-attachments/assets/a9f4bccf-88b5-472b-8ff6-2b2dcda64cbb" />
 
 ---
