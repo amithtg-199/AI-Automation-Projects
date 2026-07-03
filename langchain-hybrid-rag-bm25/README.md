@@ -141,9 +141,12 @@ Every RAGAS evaluation run and generation output is logged to PostgreSQL (`evalu
 
 The system includes a built-in evaluation framework powered by **RAGAS** to score the quality of retrieved contexts and generated answers. The evaluator lives in `scripts/evaluation/pipeline.py` and is orchestrated by `init/main.py`.
 
+RAGAS Eval:
+
 <img width="512" height="134" alt="image" src="https://github.com/user-attachments/assets/85ba47f5-14ea-4429-a94e-a383a39db208" />
 
 Human In-Loop Feedback:
+
 <img width="512" height="44" alt="image" src="https://github.com/user-attachments/assets/db4e06b8-8a4b-4d78-9386-41270a592023" />
 
 
