@@ -260,9 +260,26 @@ The pipeline outputs clear, structured logs at every step:
 
 ## Prompt & Output Versioning & Checkpoint Resuming
 
-### 1. Prompt Versioning & Guardrails (`prompts/vX/`)
+### 1. Master Enterprise RAG Setup Prompt (`project_setup_prompt.md`)
+The root directory includes a domain-agnostic meta-prompt: **`project_setup_prompt.md`**. This master prompt allows architects and developers to instruct AI assistants (ChatGPT, Claude, Gemini, Cursor, Copilot) to generate a complete, high-accuracy enterprise RAG pipeline for **any industry or use case** by simply replacing three header variables: `{DOMAIN_NAME}`, `{USE_CASE}`, and `{INPUT_FORMATS}`. It enforces microservices decoupling, SHA-256 deduplication, hierarchical Parent-Child indexing, 4-stage hybrid retrieval (BM25 + Qdrant + RRF + Cross-Encoder), chained generation, and RAGAS evaluation loops.
+
+### 2. Curated Domain Use Case Prompts (`use_case_prompts/`)
+In addition to QA test engineering prompts, the repository ships with a curated suite of enterprise domain prompt templates under `use_case_prompts/`:
+- **Legal & Compliance (`use_case_prompts/legal/`):**
+  - `contract_risk_analysis.md`: 9-column Contract Risk & Indemnity Assessment Matrix extracting liability caps and warranties without hallucinating terms.
+  - `clause_redlines.md`: Contract Redline & Negotiation Playbook formulating ideal positions, fallback compromises, and walk-away thresholds.
+  - `regulatory_compliance_check.md`: Regulatory Compliance Matrix auditing contracts against GDPR, HIPAA, CCPA, SOC2 Type II, and EU AI Act.
+- **Business Audit & Financial Compliance (`use_case_prompts/business_audit/`):**
+  - `revenue_recognition_audit.md`: ASC 606 / IFRS 15 audit matrix identifying deferred revenue discrepancies and internal control deficiencies.
+- **Customer Feedback & Support Analytics (`use_case_prompts/customer_feedback/`):**
+  - `churn_root_cause_analysis.md`: Omnichannel sentiment and churn driver matrix parsing Zendesk tickets, call logs, and NPS surveys.
+- **Healthcare & Clinical Trials (`use_case_prompts/healthcare/`):**
+  - `clinical_trial_eligibility_matrix.md`: Patient cohort matching matrix evaluating biomarker panels and lab cutoffs against NCT study protocols.
+  - `hipaa_phi_audit_matrix.md`: HIPAA PHI exposure audit matrix inspecting EHR logs, access controls, and Business Associate Agreements (BAAs).
+
+### 3. Prompt Versioning & Guardrails (`prompts/vX/`)
 - **Version Discovery:** Place your custom prompt templates inside `prompts/vX/` (e.g. `prompts/v1/`, `prompts/v2/`). The pipeline automatically scans the folder structure and loads templates from the highest numbered directory (`v2`).
-- **Strict CSV Guardrails:** All CSV generation prompts (`test_cases.md`, `automation_recommendations.md`, `rtm.md`, `test_data_matrix.md`) enforce strict formatting guardrails to ensure zero syntax corruption:
+- **Strict CSV Guardrails:** All CSV generation prompts (`test_cases.md`, `automation_recommendations.md`, `rtm.md`, `test_data_matrix.md`, and all `use_case_prompts/`) enforce strict formatting guardrails to ensure zero syntax corruption:
   - **Single-Line Cell Rule:** LLMs are explicitly forbidden from outputting newlines (`\n`) inside cells. Multi-step workflows (like `Test Steps` or `Expected Result`) must use inline numbering separated by semicolons on a single line (`1. Open page; 2. Click submit`).
   - **RFC 4180 Quoting:** Delimiters and internal double quotes must be properly escaped (`"Verify ""Error"" modal"`).
   - **Exact Column Enforcement:** Every row must strictly match the required column count (`test_cases.csv` $\rightarrow$ 15 cols, `automation_recommendations.csv` $\rightarrow$ 6 cols, `rtm.csv` $\rightarrow$ 6 cols, `test_data_matrix.csv` $\rightarrow$ 7 cols).
