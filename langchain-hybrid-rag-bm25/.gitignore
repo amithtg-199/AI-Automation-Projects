@@ -18,9 +18,12 @@ logs/
 *.log
 
 # Data
-input_documents/
-# output_documents/
-eval_datasets/
+input_documents/*
+!input_documents/SampleProject/
+output_documents/*
+!output_documents/SampleProject/
+eval_datasets/*
+!eval_datasets/SampleProject/
 # *.csv
 *.repaired
 
