@@ -19,9 +19,9 @@ logs/
 
 # Data
 input_documents/
-output_documents/
+# output_documents/
 eval_datasets/
-*.csv
+# *.csv
 *.repaired
 
 # SQLite / DBs
