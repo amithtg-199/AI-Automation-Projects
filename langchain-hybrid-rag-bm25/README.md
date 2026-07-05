@@ -136,6 +136,10 @@ In addition to Word/PDF layouts, the pipeline directly ingests standalone archit
 #### Human-in-the-Loop Feedback & Loop Engineering
 Every RAGAS evaluation run and generation output is logged to PostgreSQL (`evaluation_feedback` table). Reviewers can query pending reviews via `GET /feedback/pending/{project}` and promote or reject test cases and prompt versions via `POST /feedback/review`.
 
+Ingestion:
+
+<img width="1805" height="884" alt="image" src="https://github.com/user-attachments/assets/4b69749b-236f-46af-9a94-21b246c9581b" />
+
 ---
 
 ## Evaluation Framework (RAGAS)
@@ -174,6 +178,14 @@ question,ground_truth
 "What is the system timeout?","The system timeout is 30 seconds."
 "How are documents processed?","Through Docling/Unstructured and saved to Postgres/Qdrant."
 ```
+RAGAS Eval Result:
+
+<img width="1872" height="489" alt="image" src="https://github.com/user-attachments/assets/1f2e4eef-e88e-4991-beeb-cb04d0688679" />
+
+Human - Inloop Approval:
+
+<img width="1859" height="165" alt="image" src="https://github.com/user-attachments/assets/77020f45-3d03-4bea-a89c-1a078717b358" />
+
 
 ### Generating Evaluation Questions from Chunks
 
@@ -237,6 +249,10 @@ If no file exists in `eval_datasets/`, the system checks for `logs/manual_testse
 ### 3. Synthetic Evaluation (Auto-Generated Default)
 If neither dedicated nor manual CSV files exist, the system automatically prompts the LLM (`RagasEvaluator.generate_synthetic_dataset`) to generate synthetic test questions from your ingested document chunks, saves them to `logs/testset_<project_name>.csv`, and runs evaluation against them.
 
+Generation:
+
+<img width="1869" height="797" alt="image" src="https://github.com/user-attachments/assets/49caa422-3e6b-4115-8161-c802a859fd7c" />
+
 ---
 
 ## Observability & Metrics
@@ -255,6 +271,20 @@ The pipeline outputs clear, structured logs at every step:
 - **Generation Loop Engineering:** Banner outputting recommendations when test cases and plans finish generating.
 - **Eval Optimization Loop Engineering:** Checkpoint outputting review recommendations upon completion of RAGAS grading runs.
 - **Human Review Acceptance Logs:** Formal tracking log (`[Human Review Acceptance Logs]`) when human engineers submit feedback decisions (`APPROVED` or `REJECTED`).
+
+Grafana Dashboard:
+
+Ingestion:
+
+<img width="1490" height="900" alt="image" src="https://github.com/user-attachments/assets/db14041d-9329-4303-ab71-226e1fac67b6" />
+
+Generation:
+
+<img width="1870" height="764" alt="image" src="https://github.com/user-attachments/assets/52cb5ff9-3129-4628-ae2b-53e3327b691a" />
+
+RAGAS Eval:
+
+<img width="1866" height="832" alt="image" src="https://github.com/user-attachments/assets/63a57032-e2cb-43a2-864c-e51724bc0f23" />
 
 ---
 
