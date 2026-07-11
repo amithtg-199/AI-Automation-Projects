@@ -1,5 +1,8 @@
 # Langflow Modular Visual Wiring Guide: Universal QA Assistant RAG
 
+> [!TIP]
+> **1-Click Instant Import**: You can now import our fully wired, ready-to-run master pipeline directly into Langflow Studio by clicking **Import Flow** -> selecting **`QA_Co-Pilot.json`**!
+
 This guide details the exact node-to-node connections across your **Langflow Studio UI** for both Ingestion (`Flow 1`) and Retrieval (`Flow 2`). Every single input pin, output pin, and parameter setting is mapped below.
 
 ---
