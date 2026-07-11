@@ -16,7 +16,8 @@ AI-Automation-Projects/
 ├── langchain-hybrid-rag-bm25/             # Production RAG Pipeline (uv, Qdrant, Postgres, BM25)
 ├── langchain-rag-test-case-legacy-docs/   # Legacy RAG Implementation (Poetry reference)
 ├── langflow-agents/                       # Custom Langflow Components & API Contract Validators
-└── langflow-qa-agents/                    # Curated Langflow Low-Code Agent Workflows (.json)
+├── langflow-qa-agents/                    # Curated Langflow Low-Code Agent Workflows (.json)
+└── qa-chatbot-RAG/                        # Full Adaptive Qdrant RAG Engine & Vite Glassmorphic UI
 ```
 
 ---
@@ -63,6 +64,17 @@ A curated collection of low-code, drag-and-drop autonomous agent workflows forma
   * **`RCA-Bot.json`**: A Root Cause Analysis assistant that investigates CI/CD pipeline failures, stack traces, and system logs to pinpoint underlying defects.
   * **`Flaky_Test_Case_generator.json`**: Identifies non-deterministic test patterns and rewrites tests with robust synchronization and assertion mechanisms.
   * **`JSON-Schema-Validator.json`**: Low-code data validation node for payload verification.
+
+---
+
+### 5. [Enterprise QA-Assistant-Chatbot & Adaptive Qdrant RAG Suite (`qa-chatbot-RAG`)](./qa-chatbot-RAG/)
+
+An end-to-end, hardened enterprise Quality Assurance Retrieval-Augmented Generation ecosystem featuring a **Vite + React Glassmorphic UI** wired directly to **Qdrant Vector Engine** and **Vercel AI Gateway**.
+
+* **Core Highlights**:
+  * **Adaptive Qdrant Hybrid Retriever (`AdaptiveQdrantHybridRetriever.py`)**: Intercepts quantitative queries (`"how many test cases"`) via Exact Scroll to eliminate semantic hallucination, while performing deep 1024-dimensional Cosine search for scenario queries with strict `0.65` confidence guardrails.
+  * **Dynamic Ingestion & Versioning Studio (`qa-assistant-chatbot`)**: Interactive document upload workspace with live `PUT /collections` and `/points` REST API synchronization, custom versioning (`v1` $\rightarrow$ `v2`), and real-time **Langflow API Tweaks** override preview.
+  * **Vercel AI Gateway & Multi-Model Orchestration**: Full support for `AI_GATEWAY_API_KEY` (`vck_...`) connecting to `codestral-latest`, `mistral-large-latest`, `open-mistral-nemo`, and `Claude 3.5 Sonnet`, backed by persistent local storage configuration and interactive third-party MCP connection validation (**Jira**, **Confluence**, **GitHub**, **Slack**).
 
 ---
 
