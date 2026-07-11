@@ -1,5 +1,192 @@
 import React, { useState } from 'react';
-import { MessageSquareCode, Send, Sparkles, Copy, Check, Download, ShieldCheck, AlertTriangle, Terminal, Cpu, RefreshCcw, HelpCircle } from 'lucide-react';
+import { MessageSquareCode, Send, Sparkles, Copy, Check, Download, ShieldCheck, AlertTriangle, Terminal, Cpu, RefreshCcw, HelpCircle, Table, Info } from 'lucide-react';
+
+// Custom Markdown & Table Formatter Component
+function parseInlineText(text) {
+  if (!text) return null;
+  const parts = text.split(/<br\s*\/?>|\n/i);
+  
+  return parts.map((part, pIdx) => {
+    const regex = /(\*\*.*?\*\*|`.*?`|\b(?:Critical|High|Medium|Low|Passed|Failed|Blocked)\b)/g;
+    const tokens = part.split(regex);
+    
+    return (
+      <React.Fragment key={pIdx}>
+        {pIdx > 0 && <br />}
+        {tokens.map((token, tIdx) => {
+          if (token.startsWith('**') && token.endsWith('**')) {
+            const inner = token.slice(2, -2);
+            if (inner === 'Passed' || inner.includes('Passed')) {
+              return <span key={tIdx} className="badge badge-emerald" style={{ display: 'inline-flex', padding: '0.15rem 0.5rem', fontSize: '0.78rem', margin: '0 0.2rem' }}>{inner}</span>;
+            } if (inner === 'Failed' || inner.includes('Failed')) {
+              return <span key={tIdx} style={{ display: 'inline-flex', background: 'rgba(244, 63, 94, 0.2)', color: '#f43f5e', border: '1px solid rgba(244, 63, 94, 0.4)', padding: '0.15rem 0.5rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, margin: '0 0.2rem' }}>{inner}</span>;
+            } if (inner === 'Critical' || inner.includes('Critical')) {
+              return <span key={tIdx} style={{ display: 'inline-flex', background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', border: '1px solid rgba(245, 158, 11, 0.4)', padding: '0.15rem 0.5rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, margin: '0 0.2rem' }}>{inner}</span>;
+            }
+            return <strong key={tIdx} style={{ color: '#ffffff', fontWeight: 700 }}>{inner}</strong>;
+          }
+          if (token.startsWith('`') && token.endsWith('`')) {
+            return <code key={tIdx} style={{ background: 'rgba(255, 255, 255, 0.1)', padding: '0.15rem 0.45rem', borderRadius: '4px', color: '#38bdf8', fontFamily: 'monospace', fontSize: '0.85rem', margin: '0 0.15rem' }}>{token.slice(1, -1)}</code>;
+          }
+          if (token === 'Passed') return <span key={tIdx} className="badge badge-emerald" style={{ display: 'inline-flex', padding: '0.15rem 0.5rem', fontSize: '0.78rem', margin: '0 0.2rem' }}>Passed</span>;
+          if (token === 'Failed') return <span key={tIdx} style={{ display: 'inline-flex', background: 'rgba(244, 63, 94, 0.2)', color: '#f43f5e', border: '1px solid rgba(244, 63, 94, 0.4)', padding: '0.15rem 0.5rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, margin: '0 0.2rem' }}>Failed</span>;
+          if (token === 'Critical') return <span key={tIdx} style={{ display: 'inline-flex', background: 'rgba(245, 158, 11, 0.2)', color: '#fbbf24', border: '1px solid rgba(245, 158, 11, 0.4)', padding: '0.15rem 0.5rem', borderRadius: '6px', fontSize: '0.78rem', fontWeight: 700, margin: '0 0.2rem' }}>Critical</span>;
+          return token;
+        })}
+      </React.Fragment>
+    );
+  });
+}
+
+function MarkdownRenderer({ content }) {
+  if (!content) return null;
+  
+  const lines = content.split('\n');
+  const elements = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i].trim();
+
+    // Table detection
+    if (line.startsWith('|') && line.endsWith('|')) {
+      const tableLines = [];
+      while (i < lines.length && lines[i].trim().startsWith('|') && lines[i].trim().endsWith('|')) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      
+      if (tableLines.length >= 2) {
+        const headerCells = tableLines[0].split('|').slice(1, -1).map(c => c.trim());
+        const dataRows = tableLines.slice(1).filter(l => !l.includes('---'));
+        
+        elements.push(
+          <div key={`tbl-${i}`} style={{ overflowX: 'auto', margin: '1.5rem 0', borderRadius: '12px', border: '1px solid rgba(99, 102, 241, 0.3)', background: 'rgba(15, 23, 42, 0.85)', boxShadow: '0 10px 30px rgba(0, 0, 0, 0.35)' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ background: 'linear-gradient(90deg, rgba(30, 41, 59, 0.95), rgba(49, 46, 129, 0.9))', borderBottom: '1px solid rgba(99, 102, 241, 0.4)' }}>
+                  {headerCells.map((h, idx) => (
+                    <th key={idx} style={{ padding: '0.9rem 1.1rem', color: '#f8fafc', fontWeight: 700, whiteSpace: 'nowrap', textTransform: 'uppercase', fontSize: '0.78rem', letterSpacing: '0.04em' }}>
+                      {parseInlineText(h)}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {dataRows.map((rowStr, rIdx) => {
+                  const cells = rowStr.split('|').slice(1, -1).map(c => c.trim());
+                  return (
+                    <tr key={rIdx} style={{ borderBottom: rIdx < dataRows.length - 1 ? '1px solid rgba(255, 255, 255, 0.06)' : 'none', background: rIdx % 2 === 0 ? 'rgba(15, 23, 42, 0.4)' : 'rgba(30, 41, 59, 0.25)', transition: 'background 0.2s' }} className="hover:bg-indigo-900/20">
+                      {headerCells.map((_, cIdx) => (
+                        <td key={cIdx} style={{ padding: '0.85rem 1.1rem', color: '#e2e8f0', verticalAlign: 'top', lineHeight: 1.6 }}>
+                          {parseInlineText(cells[cIdx] || '')}
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        );
+        continue;
+      }
+    }
+
+    // Callout box detection (> [!NOTE], etc.)
+    if (line.startsWith('>')) {
+      const calloutLines = [];
+      while (i < lines.length && lines[i].trim().startsWith('>')) {
+        calloutLines.push(lines[i].trim().replace(/^>\s*/, ''));
+        i++;
+      }
+      const fullCallout = calloutLines.join('\n');
+      const isNote = fullCallout.includes('[!NOTE]') || fullCallout.includes('[!TIP]') || fullCallout.includes('Verified');
+      const isWarn = fullCallout.includes('[!WARNING]') || fullCallout.includes('[!IMPORTANT]');
+      
+      const cleanCalloutText = fullCallout.replace(/\[!(NOTE|TIP|WARNING|IMPORTANT)\]\s*/g, '');
+
+      elements.push(
+        <div key={`callout-${i}`} style={{
+          background: isWarn ? 'rgba(245, 158, 11, 0.12)' : 'rgba(16, 185, 129, 0.12)',
+          border: `1px solid ${isWarn ? 'rgba(245, 158, 11, 0.35)' : 'rgba(16, 185, 129, 0.35)'}`,
+          borderLeft: `4px solid ${isWarn ? '#f59e0b' : '#10b981'}`,
+          padding: '1.1rem 1.35rem',
+          borderRadius: '10px',
+          margin: '1.25rem 0',
+          color: isWarn ? '#fef3c7' : '#d1fae5',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '0.75rem',
+          fontSize: '0.9rem',
+          lineHeight: 1.6
+        }}>
+          {isWarn ? <AlertTriangle size={20} color="#f59e0b" flexShrink={0} style={{ marginTop: '0.1rem' }} /> : <ShieldCheck size={20} color="#10b981" flexShrink={0} style={{ marginTop: '0.1rem' }} />}
+          <div>{parseInlineText(cleanCalloutText)}</div>
+        </div>
+      );
+      continue;
+    }
+
+    // Headings
+    if (line.startsWith('### ')) {
+      elements.push(
+        <h4 key={`h4-${i}`} style={{ fontFamily: 'var(--font-heading)', fontSize: '1.15rem', fontWeight: 700, color: '#818cf8', margin: '1.4rem 0 0.6rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          {parseInlineText(line.slice(4))}
+        </h4>
+      );
+      i++;
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      elements.push(
+        <h3 key={`h3-${i}`} style={{ fontFamily: 'var(--font-heading)', fontSize: '1.3rem', fontWeight: 700, color: '#f8fafc', margin: '1.6rem 0 0.75rem 0', borderBottom: '1px solid rgba(255, 255, 255, 0.1)', paddingBottom: '0.4rem' }}>
+          {parseInlineText(line.slice(3))}
+        </h3>
+      );
+      i++;
+      continue;
+    }
+    if (line.startsWith('# ')) {
+      elements.push(
+        <h2 key={`h2-${i}`} style={{ fontFamily: 'var(--font-heading)', fontSize: '1.5rem', fontWeight: 800, color: '#f8fafc', margin: '1.75rem 0 0.8rem 0' }}>
+          {parseInlineText(line.slice(2))}
+        </h2>
+      );
+      i++;
+      continue;
+    }
+
+    // Bullet lists
+    if (line.startsWith('- ') || line.startsWith('* ')) {
+      const listItems = [];
+      while (i < lines.length && (lines[i].trim().startsWith('- ') || lines[i].trim().startsWith('* '))) {
+        listItems.push(lines[i].trim().slice(2));
+        i++;
+      }
+      elements.push(
+        <ul key={`ul-${i}`} style={{ margin: '0.6rem 0 1rem 1.5rem', display: 'flex', flexDirection: 'column', gap: '0.45rem', color: '#e2e8f0', fontSize: '0.94rem', lineHeight: 1.6 }}>
+          {listItems.map((itemStr, idx) => (
+            <li key={idx} style={{ listStyleType: 'disc' }}>{parseInlineText(itemStr)}</li>
+          ))}
+        </ul>
+      );
+      continue;
+    }
+
+    // Normal paragraph
+    if (line !== '') {
+      elements.push(
+        <p key={`p-${i}`} style={{ margin: '0.6rem 0', lineHeight: 1.7, color: '#e2e8f0', fontSize: '0.95rem' }}>
+          {parseInlineText(line)}
+        </p>
+      );
+    }
+    i++;
+  }
+
+  return <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>{elements}</div>;
+}
 
 export default function ChatStudio({ projectName, totalChunks }) {
   const [query, setQuery] = useState('');
@@ -329,11 +516,10 @@ To view specific step-by-step tables, try asking: *"Show me detailed test steps 
                   fontSize: '0.96rem',
                   lineHeight: 1.75,
                   color: '#f8fafc',
-                  whiteSpace: 'pre-wrap',
                   fontFamily: 'var(--font-main)'
                 }}
               >
-                {item.responseText}
+                <MarkdownRenderer content={item.responseText} />
               </div>
 
             </div>
