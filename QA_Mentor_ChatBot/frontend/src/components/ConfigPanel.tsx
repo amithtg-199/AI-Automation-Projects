@@ -17,7 +17,14 @@ const ConfigPanel: React.FC = () => {
     const [status, setStatus] = useState('');
     const [envStatus, setEnvStatus] = useState('');
     const [projectName, setProjectName] = useState('project_1');
-    const [progress, setProgress] = useState({
+    const [progress, setProgress] = useState<{
+        status: string;
+        total_files: number;
+        extracted_files: number;
+        total_chunks: number;
+        embedded_chunks: number;
+        category_chunks?: Record<string, number>;
+    }>({
         status: 'idle',
         total_files: 0,
         extracted_files: 0,
@@ -95,7 +102,7 @@ const ConfigPanel: React.FC = () => {
                     <div className="w-3 h-3 rounded-full bg-green-500 mt-1"></div>
                     <h1 className="text-[28px] leading-none font-bold text-[#1F2937]">QA Buddy</h1>
                 </div>
-                <div className="text-[11px] font-mono tracking-[0.2em] text-gray-400 mt-2 ml-6 uppercase">
+                <div className="text-[10px] font-mono tracking-[0.2em] text-gray-400 mt-2 ml-6 uppercase">
                     QA Knowledge System
                 </div>
             </div>
@@ -107,7 +114,7 @@ const ConfigPanel: React.FC = () => {
                 </h2>
                 
                 <div className="space-y-3 mb-6">
-                    {knowledgeBaseItems.map((item, index) => {
+                    {knowledgeBaseItems.map((item) => {
                         // Fetch actual chunks from backend state mapped by ID
                         const actualCount = progress.category_chunks ? (progress.category_chunks[item.id] || 0) : 0;
                         return (
@@ -129,23 +136,9 @@ const ConfigPanel: React.FC = () => {
                 </div>
 
                 {/* Stats & Actions */}
-                <div className="flex flex-col gap-1 mb-8 bg-gray-50 p-4 rounded-lg border border-gray-100">
-                    <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-gray-500">files extracted</span>
-                        <span className="text-[11px] font-mono text-blue-500 font-medium">{progress.extracted_files} / {progress.total_files}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-gray-500">chunks found</span>
-                        <span className="text-[11px] font-mono text-gray-500 font-medium">{progress.total_chunks}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-gray-500">chunks embedded</span>
-                        <span className="text-[11px] font-mono text-[#D95F4D] font-medium">{progress.embedded_chunks}</span>
-                    </div>
-                    <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-200">
-                        <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-gray-500">status</span>
-                        <span className="text-[11px] font-mono text-green-600 font-medium">{progress.status}</span>
-                    </div>
+                <div className="flex items-center gap-2 mb-4">
+                    <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-gray-500">total chunks</span>
+                    <span className="text-[11px] font-mono text-[#D95F4D] font-medium">{progress.total_chunks}</span>
                 </div>
                 <div className="flex gap-2 mb-10">
                     <button onClick={toggleAll} className="px-4 py-1 text-[13px] font-mono border border-gray-300 rounded-full text-gray-600 hover:bg-white transition-colors">all</button>
@@ -157,7 +150,7 @@ const ConfigPanel: React.FC = () => {
                     Mode
                 </h2>
                 <div className="mb-10 border-b border-[#E5E0D8] pb-8">
-                    <select className="w-full bg-white border border-gray-200 rounded-lg p-2 text-sm font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#D95F4D]/20 appearance-none">
+                    <select className="w-full bg-[#F8F6F0] border border-gray-300 rounded-lg p-2 text-xs font-mono text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#D95F4D]/20 appearance-none">
                         <option>auto-detect</option>
                         <option>force-graph</option>
                         <option>force-vector</option>
@@ -165,12 +158,12 @@ const ConfigPanel: React.FC = () => {
                 </div>
 
                 {/* Ingest Action */}
-                <div className="flex items-center justify-between mb-8">
-                    <h2 className="text-xs font-mono tracking-[0.15em] text-gray-500 uppercase">
+                <div className="flex items-center justify-between mb-8 border-b border-[#E5E0D8] pb-8">
+                    <h2 className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">
                         Ingest
                     </h2>
-                    <button onClick={handleIngest} className="px-4 py-1 text-[13px] font-mono border border-gray-300 rounded-full text-gray-600 hover:bg-white transition-colors">
-                        start
+                    <button onClick={handleIngest} className="px-4 py-1.5 text-[11px] font-mono border border-gray-300 rounded-full text-gray-600 hover:bg-white transition-colors">
+                        open
                     </button>
                 </div>
                 {status && <div className="text-xs font-mono text-[#D95F4D] mb-4">{status}</div>}
@@ -223,10 +216,10 @@ const ConfigPanel: React.FC = () => {
             </div>
 
             {/* Footer Metadata */}
-            <div className="mt-auto pt-6 text-[13px] font-mono text-gray-500 leading-relaxed border-t border-[#E5E0D8]">
-                <div>llm <span className="text-gray-700 font-medium">Mistral AI</span></div>
-                <div>vector <span className="text-gray-700 font-medium">Qdrant DB</span></div>
-                <div>backend <span className="text-gray-700 font-medium">FastAPI</span></div>
+            <div className="mt-auto pt-6 text-[10px] font-mono text-gray-400 leading-relaxed space-y-1">
+                <div>llm <span className="text-gray-600">Mistral AI</span></div>
+                <div>search <span className="text-gray-600">Qdrant DB BM25 Hybrid</span></div>
+                <div className="text-[#D95F4D] mt-2 cursor-pointer hover:underline">architecture docs</div>
             </div>
         </div>
     );
