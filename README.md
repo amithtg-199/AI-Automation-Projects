@@ -17,7 +17,8 @@ AI-Automation-Projects/
 ├── langchain-rag-test-case-legacy-docs/   # Legacy RAG Implementation (Poetry reference)
 ├── langflow-agents/                       # Custom Langflow Components & API Contract Validators
 ├── langflow-qa-agents/                    # Curated Langflow Low-Code Agent Workflows (.json)
-└── qa-chatbot-RAG/                        # Full Adaptive Qdrant RAG Engine & Vite Glassmorphic UI
+├── qa-chatbot-RAG/                        # Full Adaptive Qdrant RAG Engine & Vite Glassmorphic UI
+└── QA_Mentor_ChatBot/                     # Interactive QA Mentorship System & Architecture
 ```
 
 ---
@@ -80,6 +81,18 @@ An end-to-end, hardened enterprise Quality Assurance Retrieval-Augmented Generat
 * **Local Setup & Execution Summary**:
   * **Langflow Backend**: Run `docker run -p 7860:7860 langflowai/langflow:latest` or `pip install langflow && langflow run --port 7860`.
   * **Frontend UI**: Navigate to `qa-assistant-chatbot`, run `npm install && npm run dev` (`http://localhost:5173`), and connect your Vercel AI Gateway key right inside the Environment tab!
+
+---
+
+### 6. [QA Mentor ChatBot (`QA_Mentor_ChatBot`)](./QA_Mentor_ChatBot/)
+
+An interactive QA mentorship system designed to guide, review, and assist users in Software Quality Assurance practices.
+
+![QA Mentor Architecture](./QA_Mentor_ChatBot/qa_mentor_architecture_1784438683437.png)
+
+* **Core Highlights**:
+  * **Architecture Insight**: Comprehensive system design including specialized components for retrieval, graph databases, and LLM processing.
+  * **Full Stack Mentorship**: Dedicated FastAPI backend with React frontend to provide real-time mentorship and RAG-based context answering.
 
 ---
 
