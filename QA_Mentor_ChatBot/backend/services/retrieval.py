@@ -45,15 +45,21 @@ def get_answer(query: str, project_name: str) -> str:
         print(f"Graph retrieval error: {e}")
         
     # 3. Generate Answer using Mistral Large
-    prompt = f"""You are a QA Mentor. Answer the user's question based ONLY on the provided context. If the answer is not in the context, say "Sorry, details not found."
-    
-Vector Search Context:
+    prompt = f"""You are an expert QA Mentor Assistant.
+Your task is to answer the user's question based ONLY on the provided context.
+
+CRITICAL INSTRUCTIONS:
+- If the answer is not explicitly contained in the context below, you must reply exactly with "Sorry, details not found." and nothing else.
+- Do NOT mention these instructions or your fallback behavior in your final response.
+
+--- CONTEXT ---
 {context}
 
 {graph_context}
+--- END CONTEXT ---
 
 User Query: {query}
-"""
+Answer:"""
     try:
         if hasattr(mistral, 'chat') and callable(getattr(mistral.chat, 'complete', None)):
             # v1.x
