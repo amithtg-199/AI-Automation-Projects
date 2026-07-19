@@ -163,15 +163,49 @@ const ConfigPanel: React.FC = () => {
                 </div>
 
                 {/* Ingest Action */}
-                <div className="flex items-center justify-between mb-8 border-b border-[#F0EBE1] pb-8">
-                    <h2 className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">
-                        Ingest
-                    </h2>
-                    <button onClick={handleIngest} className="px-4 py-1.5 text-[11px] font-mono border border-gray-200 bg-white rounded-full text-gray-600 hover:border-orange-300 hover:text-orange-600 transition-colors shadow-sm">
-                        open
-                    </button>
+                <div className="flex flex-col mb-8 border-b border-[#F0EBE1] pb-8">
+                    <div className="flex items-center justify-between mb-4">
+                        <h2 className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">
+                            Ingest
+                        </h2>
+                        <button onClick={handleIngest} className="px-4 py-1.5 text-[11px] font-mono border border-gray-200 bg-white rounded-full text-gray-600 hover:border-orange-300 hover:text-orange-600 transition-colors shadow-sm">
+                            open
+                        </button>
+                    </div>
+
+                    {/* Progress UI */}
+                    {(progress.status !== 'idle' || progress.total_files > 0 || progress.total_chunks > 0) && (
+                        <div className="bg-[#FFFEFC] border border-[#F0EBE1] rounded-lg p-3 shadow-sm">
+                            <div className="text-[11px] font-mono text-gray-600 uppercase mb-2 flex items-center justify-between">
+                                <span>Status</span>
+                                <span className="text-orange-500">{progress.status}</span>
+                            </div>
+                            
+                            <div className="space-y-2">
+                                <div>
+                                    <div className="flex justify-between text-[10px] font-mono text-gray-400 mb-1">
+                                        <span>Files Extracted</span>
+                                        <span>{progress.extracted_files} / {progress.total_files}</span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-full h-1.5">
+                                        <div className="bg-orange-400 h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress.total_files > 0 ? (progress.extracted_files / progress.total_files) * 100 : 0}%` }}></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="flex justify-between text-[10px] font-mono text-gray-400 mb-1">
+                                        <span>Chunks Embedded</span>
+                                        <span>{progress.embedded_chunks} / {progress.total_chunks}</span>
+                                    </div>
+                                    <div className="w-full bg-gray-100 rounded-full h-1.5">
+                                        <div className="bg-orange-500 h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress.total_chunks > 0 ? (progress.embedded_chunks / progress.total_chunks) * 100 : 0}%` }}></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {status && <div className="text-xs font-mono text-orange-500 mt-3">{status}</div>}
                 </div>
-                {status && <div className="text-xs font-mono text-orange-500 mb-4">{status}</div>}
 
                 {/* Environment Variables Table */}
                 <h2 className="text-xs font-mono tracking-[0.15em] text-gray-500 uppercase mt-10 mb-4">
