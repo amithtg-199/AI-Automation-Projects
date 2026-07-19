@@ -1,0 +1,20 @@
+[project]
+name = "qa-mentor-backend"
+version = "0.1.0"
+description = "QA Mentor RAG Backend"
+readme = "README.md"
+requires-python = "==3.12.*"
+dependencies = [
+    "fastapi[all]",
+    "qdrant-client",
+    "mistralai",
+    "unstructured",
+    "neo4j",
+    "redis",
+    "celery",
+    "python-dotenv",
+    "pydantic-settings",
+    "uvicorn",
+    "tenacity",
+    "langchain-text-splitters"
+]

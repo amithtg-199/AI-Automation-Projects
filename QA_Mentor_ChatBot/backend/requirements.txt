@@ -1,0 +1,12 @@
+fastapi[all]
+qdrant-client
+mistralai
+unstructured
+neo4j
+redis
+celery
+python-dotenv
+pydantic-settings
+uvicorn
+tenacity
+langchain-text-splitters
