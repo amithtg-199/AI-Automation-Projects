@@ -17,6 +17,12 @@ const ConfigPanel: React.FC = () => {
     const [status, setStatus] = useState('');
     const [envStatus, setEnvStatus] = useState('');
     const [projectName, setProjectName] = useState('project_1');
+    const [backendUrl, setBackendUrl] = useState(() => localStorage.getItem('backendUrl') || 'http://localhost:8000');
+
+    React.useEffect(() => {
+        localStorage.setItem('backendUrl', backendUrl);
+    }, [backendUrl]);
+
     const [progress, setProgress] = useState<{
         status: string;
         total_files: number;
@@ -36,7 +42,7 @@ const ConfigPanel: React.FC = () => {
         const interval = setInterval(async () => {
             if (!projectName) return;
             try {
-                const res = await fetch(`http://localhost:8000/progress/${projectName}`);
+                const res = await fetch(`${backendUrl}/progress/${projectName}`);
                 const data = await res.json();
                 setProgress(data);
             } catch (e) {
@@ -54,7 +60,7 @@ const ConfigPanel: React.FC = () => {
     const handleSaveEnv = async () => {
         setEnvStatus('saving...');
         try {
-            const res = await fetch('http://localhost:8000/config', {
+            const res = await fetch(`${backendUrl}/config`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -74,7 +80,7 @@ const ConfigPanel: React.FC = () => {
     const handleIngest = async () => {
         setStatus('Processing files...');
         try {
-            const res = await fetch('http://localhost:8000/ingest', { 
+            const res = await fetch(`${backendUrl}/ingest`, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ project_name: projectName })
@@ -181,7 +187,13 @@ const ConfigPanel: React.FC = () => {
                                 </td>
                             </tr>
                             <tr className="group">
-                                <td className="p-3 font-mono text-gray-500 bg-gray-50/50 w-[40%] border-r border-gray-100">Qdrant URL</td>
+                                <td className="p-3 font-mono text-gray-500 bg-gray-50/50 w-[40%] border-r border-gray-100">Backend URL</td>
+                                <td className="p-0 relative">
+                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500/20 transition-all bg-transparent" value={backendUrl} onChange={e => setBackendUrl(e.target.value)} />
+                                </td>
+                            </tr>
+                            <tr className="group">
+                                <td className="p-3 font-mono text-gray-500 bg-gray-50/50 border-r border-gray-100">Qdrant URL</td>
                                 <td className="p-0 relative">
                                     <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500/20 transition-all bg-transparent" value={qdrantUrl} onChange={e => setQdrantUrl(e.target.value)} />
                                 </td>

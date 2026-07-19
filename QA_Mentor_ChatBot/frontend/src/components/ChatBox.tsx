@@ -16,7 +16,8 @@ const ChatBox: React.FC = () => {
         setIsLoading(true);
         
         try {
-            const response = await fetch('http://localhost:8000/chat', {
+            const backendUrl = localStorage.getItem('backendUrl') || 'http://localhost:8000';
+            const response = await fetch(`${backendUrl}/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: userMsg, project_name: 'project_1' })
