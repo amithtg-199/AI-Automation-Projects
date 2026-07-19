@@ -95,15 +95,15 @@ const ConfigPanel: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col h-full w-full py-8 px-6 overflow-y-auto text-gray-800">
+        <div className="flex flex-col h-full w-full py-8 px-6 overflow-y-auto text-gray-800 bg-[#FFFDF7]">
             {/* Header */}
-            <div className="mb-10">
-                <div className="flex items-center gap-3">
-                    <div className="w-3 h-3 rounded-full bg-green-500 mt-1"></div>
-                    <h1 className="text-[28px] leading-none font-bold text-[#1F2937]">QA Buddy</h1>
+            <div className="mb-10 flex items-center justify-between">
+                <div className="text-[10px] font-mono tracking-[0.2em] text-gray-400 uppercase">
+                    Configuration
                 </div>
-                <div className="text-[10px] font-mono tracking-[0.2em] text-gray-400 mt-2 ml-6 uppercase">
-                    QA Knowledge System
+                <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                    <span className="text-[10px] font-mono text-gray-400">Connected</span>
                 </div>
             </div>
 
@@ -124,7 +124,7 @@ const ConfigPanel: React.FC = () => {
                                     type="checkbox" 
                                     checked={selected.includes(item.id)}
                                     readOnly
-                                    className="w-[14px] h-[14px] text-orange-600 rounded-[3px] border-gray-300 focus:ring-0 cursor-pointer accent-[#D95F4D]"
+                                    className="w-[14px] h-[14px] text-orange-500 rounded-[4px] border-gray-300 focus:ring-0 cursor-pointer accent-orange-500"
                                 />
                                 <div className={`w-2 h-2 rounded-full ${item.color}`}></div>
                                 <span className="text-[15px] font-medium text-gray-700">{item.name}</span>
@@ -135,10 +135,9 @@ const ConfigPanel: React.FC = () => {
                     })}
                 </div>
 
-                {/* Stats & Actions */}
                 <div className="flex items-center gap-2 mb-4">
                     <span className="text-[11px] font-mono uppercase tracking-[0.1em] text-gray-500">total chunks</span>
-                    <span className="text-[11px] font-mono text-[#D95F4D] font-medium">{progress.total_chunks}</span>
+                    <span className="text-[11px] font-mono text-orange-500 font-medium">{progress.total_chunks}</span>
                 </div>
                 <div className="flex gap-2 mb-10">
                     <button onClick={toggleAll} className="px-4 py-1 text-[13px] font-mono border border-gray-300 rounded-full text-gray-600 hover:bg-white transition-colors">all</button>
@@ -149,8 +148,8 @@ const ConfigPanel: React.FC = () => {
                 <h2 className="text-xs font-mono tracking-[0.15em] text-gray-500 uppercase mb-4">
                     Mode
                 </h2>
-                <div className="mb-10 border-b border-[#E5E0D8] pb-8">
-                    <select className="w-full bg-[#F8F6F0] border border-gray-300 rounded-lg p-2 text-xs font-mono text-gray-600 focus:outline-none focus:ring-2 focus:ring-[#D95F4D]/20 appearance-none">
+                <div className="mb-10 border-b border-[#F0EBE1] pb-8">
+                    <select className="w-full bg-white border border-[#F0EBE1] rounded-lg p-2 text-xs font-mono text-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500/20 appearance-none shadow-sm">
                         <option>auto-detect</option>
                         <option>force-graph</option>
                         <option>force-vector</option>
@@ -158,15 +157,15 @@ const ConfigPanel: React.FC = () => {
                 </div>
 
                 {/* Ingest Action */}
-                <div className="flex items-center justify-between mb-8 border-b border-[#E5E0D8] pb-8">
+                <div className="flex items-center justify-between mb-8 border-b border-[#F0EBE1] pb-8">
                     <h2 className="text-[10px] font-mono tracking-[0.2em] text-gray-500 uppercase">
                         Ingest
                     </h2>
-                    <button onClick={handleIngest} className="px-4 py-1.5 text-[11px] font-mono border border-gray-300 rounded-full text-gray-600 hover:bg-white transition-colors">
+                    <button onClick={handleIngest} className="px-4 py-1.5 text-[11px] font-mono border border-gray-200 bg-white rounded-full text-gray-600 hover:border-orange-300 hover:text-orange-600 transition-colors shadow-sm">
                         open
                     </button>
                 </div>
-                {status && <div className="text-xs font-mono text-[#D95F4D] mb-4">{status}</div>}
+                {status && <div className="text-xs font-mono text-orange-500 mb-4">{status}</div>}
 
                 {/* Environment Variables Table */}
                 <h2 className="text-xs font-mono tracking-[0.15em] text-gray-500 uppercase mt-10 mb-4">
@@ -178,25 +177,25 @@ const ConfigPanel: React.FC = () => {
                             <tr className="group">
                                 <td className="p-3 font-mono text-gray-500 bg-gray-50/50 border-r border-gray-100">Project Name</td>
                                 <td className="p-0 relative">
-                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#D95F4D]/20 transition-all bg-transparent" value={projectName} onChange={e => setProjectName(e.target.value)} />
+                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500/20 transition-all bg-transparent" value={projectName} onChange={e => setProjectName(e.target.value)} />
                                 </td>
                             </tr>
                             <tr className="group">
                                 <td className="p-3 font-mono text-gray-500 bg-gray-50/50 w-[40%] border-r border-gray-100">Qdrant URL</td>
                                 <td className="p-0 relative">
-                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#D95F4D]/20 transition-all bg-transparent" value={qdrantUrl} onChange={e => setQdrantUrl(e.target.value)} />
+                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500/20 transition-all bg-transparent" value={qdrantUrl} onChange={e => setQdrantUrl(e.target.value)} />
                                 </td>
                             </tr>
                             <tr className="group">
                                 <td className="p-3 font-mono text-gray-500 bg-gray-50/50 border-r border-gray-100">Mistral API</td>
                                 <td className="p-0 relative">
-                                    <input type="password" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#D95F4D]/20 transition-all bg-transparent" placeholder="Loaded from .env" value={mistralKey} onChange={e => setMistralKey(e.target.value)} />
+                                    <input type="password" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500/20 transition-all bg-transparent" placeholder="Loaded from .env" value={mistralKey} onChange={e => setMistralKey(e.target.value)} />
                                 </td>
                             </tr>
                             <tr className="group">
                                 <td className="p-3 font-mono text-gray-500 bg-gray-50/50 border-r border-gray-100">Jira MCP</td>
                                 <td className="p-0 relative">
-                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#D95F4D]/20 transition-all bg-transparent placeholder-gray-300" placeholder="https://domain.atlassian.net" value={jiraUrl} onChange={e => setJiraUrl(e.target.value)} />
+                                    <input type="text" className="w-full h-full p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-orange-500/20 transition-all bg-transparent placeholder-gray-300" placeholder="https://domain.atlassian.net" value={jiraUrl} onChange={e => setJiraUrl(e.target.value)} />
                                 </td>
                             </tr>
                         </tbody>
@@ -205,11 +204,11 @@ const ConfigPanel: React.FC = () => {
                 
                 <div className="flex items-center justify-between mb-8">
                     {envStatus ? (
-                        <div className="text-[11px] font-mono text-[#D95F4D]">{envStatus}</div>
+                        <div className="text-[11px] font-mono text-orange-500">{envStatus}</div>
                     ) : (
                         <div></div>
                     )}
-                    <button onClick={handleSaveEnv} className="px-4 py-1 text-[13px] font-mono border border-[#D95F4D] text-[#D95F4D] rounded-full hover:bg-[#D95F4D] hover:text-white transition-colors">
+                    <button onClick={handleSaveEnv} className="px-4 py-1 text-[13px] font-mono border border-orange-500 text-orange-500 rounded-full hover:bg-orange-500 hover:text-white transition-colors">
                         save config
                     </button>
                 </div>
@@ -219,7 +218,6 @@ const ConfigPanel: React.FC = () => {
             <div className="mt-auto pt-6 text-[10px] font-mono text-gray-400 leading-relaxed space-y-1">
                 <div>llm <span className="text-gray-600">Mistral AI</span></div>
                 <div>search <span className="text-gray-600">Qdrant DB BM25 Hybrid</span></div>
-                <div className="text-[#D95F4D] mt-2 cursor-pointer hover:underline">architecture docs</div>
             </div>
         </div>
     );
