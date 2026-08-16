@@ -16,7 +16,6 @@ export function ReviewModal({ isOpen, onClose, data }: ReviewModalProps) {
       title="Review API Test Generation Plan"
       isOpen={isOpen}
       onClose={onClose}
-      size="lg"
     >
       <div className="space-y-4">
         <p className="text-sm text-secondary">
