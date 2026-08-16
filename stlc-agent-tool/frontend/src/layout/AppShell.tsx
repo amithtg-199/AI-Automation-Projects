@@ -21,7 +21,7 @@ import { ReviewModal } from '../components/ReviewModal';
 import { useAppContext } from '../context/AppContext';
 
 export function AppShell() {
-  const { user, role, projectName, setProjectName, logout, assignedProjects } = useAppContext();
+  const { user, role, projectName, setProjectName, logout, assignedProjects, token } = useAppContext();
   const [navCollapsed, setNavCollapsed] = useState(false);
   const [chatOpen, setChatOpen] = useState(false);
   const [reviewModalOpen, setReviewModalOpen] = useState(false);

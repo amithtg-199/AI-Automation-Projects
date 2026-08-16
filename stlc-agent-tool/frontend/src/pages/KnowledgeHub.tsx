@@ -66,7 +66,7 @@ export function KnowledgeHub() {
       const file = e.target.files[0];
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('project_name', projectName);
+      formData.append('project_name', projectName || '');
       
       try {
         const res = await fetch('/api/knowledge-hub/upload', {
@@ -93,7 +93,7 @@ export function KnowledgeHub() {
   const handleIngest = async () => {
     setIngesting(true);
     const formData = new URLSearchParams();
-    formData.append('project_name', projectName);
+    formData.append('project_name', projectName || '');
     
     try {
       const res = await fetch('/api/knowledge-hub/ingest', {
