@@ -1,0 +1,21 @@
+# Global configuration
+global:
+  imagePullSecrets: []
+
+postgresql:
+  enabled: true
+  auth:
+    postgresPassword: "postgres-password"
+    database: "stlc_db"
+
+redis:
+  enabled: true
+  auth:
+    enabled: false
+
+# Self Hosted LLM Inference via KServe/vLLM
+selfHostedLLM:
+  enabled: false
+  model: "meta-llama/Llama-2-7b-chat-hf"
+  minReplicas: 0 # scale to zero!
+  trafficPercent: 100

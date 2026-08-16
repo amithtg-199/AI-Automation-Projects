@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-main: #0D0F14;      /* app background, near-black not pure black */
+    --bg-card: #161922;      /* card/panel surface */
+    --bg-elevated: #1E2230;  /* modals, dropdowns, the docked chat rail */
+    --border: #2A2F3E;
+    --text-primary: #E8EAF0;
+    --text-secondary: #9AA1B5;
+    
+    --primary: #6C63FF;      /* brand/interactive accent — indigo-violet */
+    --primary-hover: #7D74FF;
+    
+    --success: #2ECC8F;      /* pass */
+    --fail: #F0556A;         /* fail */
+    --warning: #F0B94F;      /* flaky / needs-review / pending-approval */
+    --info: #4FA8F0;         /* neutral/informational status */
+  }
+
+  body {
+    @apply bg-main text-primary font-sans antialiased selection:bg-primary selection:text-white;
+  }
+}

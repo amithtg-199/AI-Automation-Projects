@@ -1,0 +1,16 @@
+{{- if .Values.selfHostedLLM.enabled }}
+========================================================================
+WARNING: selfHostedLLM.enabled is set to true.
+========================================================================
+You have enabled the self-hosted inference path (vLLM via KServe).
+
+Prerequisites:
+1. Your cluster MUST have Knative Serving and Istio (or Kourier) installed.
+2. Your cluster MUST have the KServe CRDs installed.
+3. Your cluster MUST have GPU nodes provisioned and the NVIDIA device plugin running.
+
+If any of these are missing, the InferenceService resource will fail to apply or fail to schedule!
+========================================================================
+{{- end }}
+
+The STLC Agentic Platform has been installed.

@@ -1,0 +1,28 @@
+{{- if .Values.selfHostedLLM.enabled }}
+apiVersion: "serving.kserve.io/v1beta1"
+kind: "InferenceService"
+metadata:
+  name: "stlc-vllm"
+  annotations:
+    # Autoscale to zero when idle
+    serving.kserve.io/minReplicas: "{{ .Values.selfHostedLLM.minReplicas }}"
+spec:
+  predictor:
+    containers:
+      - name: kserve-container
+        image: vllm/vllm-openai:latest
+        command:
+          - "python3"
+          - "-m"
+          - "vllm.entrypoints.openai.api_server"
+        args:
+          - "--model"
+          - "{{ .Values.selfHostedLLM.model }}"
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+    # Canary rollout traffic split
+    traffic:
+      - percent: {{ .Values.selfHostedLLM.trafficPercent }}
+        latestRevision: true
+{{- end }}
