@@ -1,0 +1,12 @@
+# POC Mock Data - do not push to GitHub
+projects/*/test_case_result/*.json
+backend/mock_seed.py
+
+# Secrets
+global_variables/.env
+global_variables/secret.key
+
+# System
+.DS_Store
+Thumbs.db
+*.png
