@@ -116,7 +116,7 @@ A centralized, AI-driven automation orchestrator for modern Software Testing Lif
 A dedicated workspace for CrewAI based multi-agent automation scenarios. 
 
 * **Included Projects**:
-  * **`pro1_flaky_testcase_locator_agent`**: Autonomous agent setup for locating and diagnosing flaky test cases.
+  * **[`pro1_flaky_testcase_locator_agent`](./crewai_projects/pro1_flaky_testcase_locator_agent/)**: Autonomous agent setup for locating, diagnosing, and performing root cause analysis (RCA) on non-deterministic Playwright test failures across Jira tickets using multi-LLM orchestration (Mistral, Groq, OpenAI, Claude, Ollama).
 
 ---
 
