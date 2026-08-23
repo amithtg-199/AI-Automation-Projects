@@ -1,9 +1,3 @@
-**/langflow-data/
-**/__pycache__/
-*.pyc
-.DS_Store
-mcp_config.json
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

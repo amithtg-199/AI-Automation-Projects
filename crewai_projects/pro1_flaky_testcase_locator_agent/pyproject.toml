@@ -1,0 +1,12 @@
+[project]
+name = "pro1-flaky-testcase-locator-agent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[litellm]>=1.15.17",
+    "dotenv>=0.9.9",
+    "requests>=2.34.2",
+    "typing>=3.10.0.0",
+]

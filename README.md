@@ -13,12 +13,14 @@ Welcome to the **AI Automation Projects** repository. This centralized monorepo 
 
 ```text
 AI-Automation-Projects/
+├── crewai_projects/                       # CrewAI based Multi-Agent workflows
 ├── langchain-hybrid-rag-bm25/             # Production RAG Pipeline (uv, Qdrant, Postgres, BM25)
 ├── langchain-rag-test-case-legacy-docs/   # Legacy RAG Implementation (Poetry reference)
 ├── langflow-agents/                       # Custom Langflow Components & API Contract Validators
 ├── langflow-qa-agents/                    # Curated Langflow Low-Code Agent Workflows (.json)
 ├── qa-chatbot-RAG/                        # Full Adaptive Qdrant RAG Engine & Vite Glassmorphic UI
-└── QA_Mentor_ChatBot/                     # Interactive QA Mentorship System & Architecture
+├── QA_Mentor_ChatBot/                     # Interactive QA Mentorship System & Architecture
+└── stlc-agent-tool/                       # STLC Agentic Platform (LangGraph, FastAPI, React)
 ```
 
 ---
@@ -93,6 +95,28 @@ An interactive QA mentorship system designed to guide, review, and assist users 
 * **Core Highlights**:
   * **Architecture Insight**: Comprehensive system design including specialized components for retrieval, graph databases, and LLM processing.
   * **Full Stack Mentorship**: Dedicated FastAPI backend with React frontend to provide real-time mentorship and RAG-based context answering.
+
+---
+
+### 7. [STLC Agentic Platform (`stlc-agent-tool`)](./stlc-agent-tool/)
+
+A centralized, AI-driven automation orchestrator for modern Software Testing Life Cycles (STLC) utilizing LangGraph for multi-agent workflows.
+
+* **Core Highlights**:
+  * **Intelligent Ingestion**: Legacy test cases and Swagger specs mapped into a Qdrant Vector Database and Neo4j Graph Database.
+  * **Zero-Shot Test Generation**: Generates robust API and UI test suites (Playwright/pytest) grounded in RAG contexts.
+  * **Heuristic Flaky Detection**: Uses statistical variance across historical runs to identify flaky tests.
+  * **Auto-Debugging**: Utilizes Semantic Response Caching to fix code without wasting LLM tokens.
+  * **Central Knowledge Hub**: Employs ML clustering to mine test scripts and share reusable automation strategies.
+
+---
+
+### 8. [CrewAI Projects (`crewai_projects`)](./crewai_projects/)
+
+A dedicated workspace for CrewAI based multi-agent automation scenarios. 
+
+* **Included Projects**:
+  * **`pro1_flaky_testcase_locator_agent`**: Autonomous agent setup for locating and diagnosing flaky test cases.
 
 ---
 
