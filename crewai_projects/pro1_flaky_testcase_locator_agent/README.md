@@ -95,93 +95,159 @@ The agent features a flexible `get_llm()` factory supporting cloud and local inf
 ```text
 pro1_flaky_testcase_locator_agent/
 ├── agent/
+│   ├── __init__.py           # Agent package initializer
 │   └── agent.py              # CrewAI Agent, Tool, Task, and LLM definitions
 ├── config/
+│   ├── __init__.py           # Config package initializer
 │   ├── .env.example          # Environment variable template
 │   └── .env                  # Local credentials (git-ignored)
-├── main.py                   # Entry point
-├── pyproject.toml            # Project dependencies and packaging configuration
-├── requirement.txt           # Pip dependencies
-├── uv.lock                   # Deterministic lockfile
+├── main.py                   # Main entry point to execute the agent workflow
+├── pyproject.toml            # Project dependencies and packaging configuration (uv/PEP 621)
+├── requirements.txt          # Exported pip dependencies
+├── uv.lock                   # Deterministic dependency lockfile
 └── README.md                 # Project documentation
 ```
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Building & Setting Up the Agent
 
 ### Prerequisites
-* Python 3.10+
-* `uv` (recommended) or `pip`
-* Jira Cloud Account with an API Token
+* **Python**: `3.10` to `< 3.14`
+* **Package Manager**: [`uv`](https://docs.astral.sh/uv/) (strongly recommended for fast, deterministic builds) or `pip`
+* **Jira Cloud Account**: API token with read permissions for issues & attachments
+* **LLM Provider API Key**: (e.g. Mistral AI, Groq, OpenAI, Anthropic, or a local Ollama instance)
 
-### 1. Installation
+### 1. Build Environment & Install Dependencies
 
-Using **uv**:
-```bash
-cd crewai_projects/pro1_flaky_testcase_locator_agent
-uv sync
-```
+#### Option A: Using `uv` (Recommended)
 
-Or using **pip / virtualenv**:
-```bash
-python -m venv .venv
-# On Windows:
-.venv\Scripts\activate
-# On Linux/macOS:
-source .venv/bin/activate
+1. Navigate to the agent project directory:
+   ```bash
+   cd crewai_projects/pro1_flaky_testcase_locator_agent
+   ```
+2. Build the environment and sync dependencies directly from `uv.lock` / `pyproject.toml`:
+   ```bash
+   uv sync
+   ```
+   > **Note**: `uv sync` automatically creates a local virtual environment (`.venv`) and installs all locked dependencies including CrewAI and LiteLLM.
 
-pip install -r requirement.txt
-```
+#### Option B: Using standard `pip` / `venv`
+
+1. Navigate to the agent project directory:
+   ```bash
+   cd crewai_projects/pro1_flaky_testcase_locator_agent
+   ```
+2. Create and activate a virtual environment:
+   ```bash
+   # Create virtual environment
+   python -m venv .venv
+
+   # Activate on Windows (PowerShell / Command Prompt):
+   .venv\Scripts\activate
+
+   # Activate on Linux / macOS:
+   source .venv/bin/activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
 
 ### 2. Configure Environment Variables
 
-Copy the `.env.example` file to `config/.env`:
+1. Copy `.env.example` into a new `.env` file in the `config/` directory:
+   ```bash
+   # Windows (PowerShell)
+   Copy-Item config/.env.example config/.env
 
-```bash
-cp config/.env.example config/.env
+   # Linux / macOS / Bash
+   cp config/.env.example config/.env
+   ```
+
+2. Open `config/.env` and configure your credentials:
+
+   ```ini
+   # Active LLM Provider: 'mistral' | 'groq' | 'openai' | 'anthropic' | 'ollama'
+   ACTIVE_LLM_PROVIDER="mistral"
+
+   # Mistral Configuration (Default)
+   MISTRAL_MODEL=mistral/codestral-latest
+   MISTRAL_API_KEY=your_mistral_api_key_here
+
+   # Groq (Optional)
+   GROQ_API_KEY=your_groq_api_key_here
+
+   # OpenAI (Optional)
+   OPENAI_API_KEY=your_openai_api_key_here
+
+   # Anthropic (Optional)
+   ANTHROPIC_API_KEY=your_anthropic_api_key_here
+
+   # Jira Cloud API Configuration
+   JIRA_API_TOKEN=your_jira_api_token_here
+   JIRA_EMAIL=your_email@example.com
+   JIRA_SERVER=https://your-domain.atlassian.net
+   ```
+
+---
+
+## 💻 Executing the Agent
+
+You can execute the diagnostic workflow using either `main.py` (recommended entry point) or directly via `agent/agent.py`.
+
+### 1. Configure Target Jira Issues & Reports
+
+In [main.py](file:///d:/ai_3x_qa/AI-Automation-Projects/crewai_projects/pro1_flaky_testcase_locator_agent/main.py), specify the two Jira ticket IDs and attachment filenames (or issue descriptions containing the test run JSONs) you wish to cross-reference:
+
+```python
+inputs = {
+    "jira_1": "SU-10",          # First Jira ticket containing Playwright test run
+    "jira_2": "SU-11",          # Second Jira ticket containing Playwright test run
+    "file_1": "result1.json",   # First Playwright JSON report attachment
+    "file_2": "result2.json",   # Second Playwright JSON report attachment
+}
 ```
 
-Edit `config/.env` with your credentials:
+### 2. Run the Workflow
 
-```ini
-# Active LLM Provider: 'mistral' | 'groq' | 'openai' | 'anthropic' | 'ollama'
-ACTIVE_LLM_PROVIDER="mistral"
+#### Using `uv run` (No manual venv activation required):
+```bash
+uv run main.py
+```
 
-# Mistral LLM
-MISTRAL_MODEL=mistral/codestral-latest
-MISTRAL_API_KEY=your_mistral_api_key_here
-
-# Jira Configuration
-JIRA_API_TOKEN=your_jira_api_token_here
-JIRA_EMAIL=your_email@example.com
-JIRA_SERVER=https://your-domain.atlassian.net
+#### Or Using Activated Virtual Environment (`python`):
+```bash
+python main.py
 ```
 
 ---
 
-## 💻 Usage
+## 📊 Sample Output Report
 
-Run the agent script:
+The agent fetches the attachments, parses the spec results across runs, identifies inconsistencies, and produces a complete RCA:
 
-```bash
-python agent/agent.py
+```markdown
+--------------Flaky Test Analysis Report-----------------
+Prompt Tokens: 3241
+Completion Tokens: 842
+Total Tokens:  4083
+
+# Non-Deterministic / Flaky Test Analysis Report
+
+## 1. Executive Summary
+- **Total Specs Evaluated**: 14
+- **Consistent Passing Specs**: 12
+- **Flaky / Inconsistent Specs**: 2
+
+## 2. Identified Flaky Test Cases
+| Spec ID | Spec Title | Run 1 (SU-10) | Run 2 (SU-11) | Failure Type |
+| :--- | :--- | :--- | :--- | :--- |
+| `[spec_03]` | `Checkout -> Submit Payment` | **PASS** | **FAIL (Timeout 30000ms)** | Async Race Condition |
+| `[spec_07]` | `User Profile -> Update Avatar` | **FAIL** | **PASS** | Dynamic DOM Loading |
+
+## 3. Root Cause Analysis & Recommendations
+...
 ```
-
-### Example Input Configuration:
-```python
-inputs = {
-    "jira_1": "SU-10",          # First Jira ticket with Playwright report
-    "jira_2": "SU-11",          # Second Jira ticket with Playwright report
-    "file_1": "result1.json",   # First attachment filename
-    "file_2": "result2.json",   # Second attachment filename
-}
-```
-
-### Sample Output Report
-The agent delivers an analysis report including:
-* **Flaky Test Summary**: Table of specs with status deltas (e.g. `Run 1: PASS` vs `Run 2: FAIL`).
-* **Failure Analysis**: Extracted error messages, locator timeouts, or unhandled promise rejections.
-* **Root Cause Assessment**: Identified synchronization issues (e.g. missing `waitForURL`, race conditions, dynamic DOM rendering).
-* **Recommended Code Fix**: Concrete Playwright code snippet adjustments (e.g., using `toBeVisible()` assertions instead of arbitrary timeouts).
-* **Token Usage Metrics**: Detailed prompt, completion, and total token accounting.

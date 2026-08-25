@@ -113,10 +113,14 @@ A centralized, AI-driven automation orchestrator for modern Software Testing Lif
 
 ### 8. [CrewAI Projects (`crewai_projects`)](./crewai_projects/)
 
-A dedicated workspace for CrewAI based multi-agent automation scenarios. 
+A dedicated workspace for enterprise CrewAI multi-agent automation workflows.
 
 * **Included Projects**:
-  * **[`pro1_flaky_testcase_locator_agent`](./crewai_projects/pro1_flaky_testcase_locator_agent/)**: Autonomous agent setup for locating, diagnosing, and performing root cause analysis (RCA) on non-deterministic Playwright test failures across Jira tickets using multi-LLM orchestration (Mistral, Groq, OpenAI, Claude, Ollama).
+  * **[`pro1_flaky_testcase_locator_agent`](./crewai_projects/pro1_flaky_testcase_locator_agent/)**:
+    * **Autonomous Playwright Diagnostics**: Autonomously retrieves Playwright test execution artifacts (`result.json`) attached to Jira Cloud tickets (or stored in issue descriptions).
+    * **Multi-Run Delta & Root Cause Analysis**: Identifies non-deterministic failures, async timing discrepancies, and locator timeouts across disparate test runs to formulate actionable code patches and Markdown RCA reports.
+    * **Pluggable LLM Backend**: Dynamic switching across Mistral AI (`codestral-latest`), Groq (`llama-3.3-70b-versatile`), OpenAI (`gpt-4o`), Claude (`claude-3-5-sonnet`), and local Ollama (`qwen2.5-coder:32b`).
+    * **Modern Build Tooling**: Fast, deterministic dependency management via `uv sync` and zero-activation execution via `uv run main.py`.
 
 ---
 
@@ -126,7 +130,9 @@ Each project maintains its own dedicated setup guide and dependencies. To get st
 
 1. **For Production RAG Generation & Evaluation**:
    Navigate to [`langchain-hybrid-rag-bm25`](./langchain-hybrid-rag-bm25/) and follow the [SETUP.md](./langchain-hybrid-rag-bm25/SETUP.md) instructions using `uv`.
-2. **For Langflow Visual Workflows**:
+2. **For CrewAI Multi-Agent Workflows**:
+   Navigate to [`crewai_projects/pro1_flaky_testcase_locator_agent`](./crewai_projects/pro1_flaky_testcase_locator_agent/), run `uv sync`, copy `config/.env.example` to `config/.env`, and execute `uv run main.py`.
+3. **For Langflow Visual Workflows**:
    Launch your local instance of [Langflow](https://github.com/langflow-ai/langflow) (`pip install langflow && langflow run`) and import any JSON workflow from [`langflow-qa-agents`](./langflow-qa-agents/).
 
 ---
@@ -134,3 +140,4 @@ Each project maintains its own dedicated setup guide and dependencies. To get st
 ## License & Contributing
 
 Contributions, issues, and feature requests are welcome! Feel free to open a pull request or discuss enhancements across any of the included pipelines.
+
