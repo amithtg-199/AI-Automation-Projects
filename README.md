@@ -14,6 +14,7 @@ Welcome to the **AI Automation Projects** repository. This centralized monorepo 
 ```text
 AI-Automation-Projects/
 ├── crewai_projects/                       # CrewAI based Multi-Agent workflows
+├── langchain_projects/                    # LangChain LCEL Agents (Content Writer Agent, etc.)
 ├── langchain-hybrid-rag-bm25/             # Production RAG Pipeline (uv, Qdrant, Postgres, BM25)
 ├── langchain-rag-test-case-legacy-docs/   # Legacy RAG Implementation (Poetry reference)
 ├── langflow-agents/                       # Custom Langflow Components & API Contract Validators
@@ -25,7 +26,19 @@ AI-Automation-Projects/
 
 ---
 
-### 1. [LangChain Hybrid RAG & BM25 Pipeline (`langchain-hybrid-rag-bm25`)](./langchain-hybrid-rag-bm25/)
+### 1. [LangChain Projects (`langchain_projects`)](./langchain_projects/)
+
+A collection of autonomous agents engineered with **LangChain Expression Language (LCEL)** and dynamic multi-model orchestration.
+
+* **Included Agents**:
+  * **[`Content_writer_agent`](./langchain_projects/Content_writer_agent/)**:
+    * **Veteran Researcher Persona**: Emulates a senior technical researcher with 10+ years of data extraction and analysis experience to generate in-depth, structured research papers and technical briefs.
+    * **Fault-Tolerant Multi-LLM Fallback Engine**: Primary provider powered by **Mistral AI** (`codestral-latest`), with automatic dynamic failover to **OpenAI** (`gpt-4o-mini`), **Anthropic Claude** (`claude-3-5-sonnet-latest`), and **Google Gemini** (`gemini-1.5-flash`).
+    * **Modern Dependency Management**: Compatible with both fast Astral **`uv`** and standard **`pip` / `venv`**.
+
+---
+
+### 2. [LangChain Hybrid RAG & BM25 Pipeline (`langchain-hybrid-rag-bm25`)](./langchain-hybrid-rag-bm25/)
 
 A production-grade, multi-modal RAG platform built with modern Python (`uv` package manager) that autonomously analyzes software documentation (PRDs, Jira user stories, architecture diagrams) and generates enterprise-ready QA artifacts.
 
@@ -40,13 +53,13 @@ A production-grade, multi-modal RAG platform built with modern Python (`uv` pack
 
 ---
 
-### 2. [LangChain RAG Legacy Implementation (`langchain-rag-test-case-legacy-docs`)](./langchain-rag-test-case-legacy-docs/)
+### 3. [LangChain RAG Legacy Implementation (`langchain-rag-test-case-legacy-docs`)](./langchain-rag-test-case-legacy-docs/)
 
 The original, preserved implementation of the QA Test Case Generation RAG pipeline built using **Poetry**. Maintained as a historical reference and architecture benchmark for backward compatibility.
 
 ---
 
-### 3. [Langflow Custom Agents & Contract Validators (`langflow-agents`)](./langflow-agents/)
+### 4. [Langflow Custom Agents & Contract Validators (`langflow-agents`)](./langflow-agents/)
 
 A collection of custom Python utilities and extensions designed to integrate seamlessly into custom pipelines or Langflow environments.
 
@@ -56,7 +69,7 @@ A collection of custom Python utilities and extensions designed to integrate sea
 
 ---
 
-### 4. [Langflow QA Agent Workflows (`langflow-qa-agents`)](./langflow-qa-agents/)
+### 5. [Langflow QA Agent Workflows (`langflow-qa-agents`)](./langflow-qa-agents/)
 
 A curated collection of low-code, drag-and-drop autonomous agent workflows formatted as importable Langflow JSON blueprints (`*.json`).
 
@@ -70,7 +83,7 @@ A curated collection of low-code, drag-and-drop autonomous agent workflows forma
 
 ---
 
-### 5. [Enterprise QA-Assistant-Chatbot & Adaptive Qdrant RAG Suite (`qa-chatbot-RAG`)](./qa-chatbot-RAG/)
+### 6. [Enterprise QA-Assistant-Chatbot & Adaptive Qdrant RAG Suite (`qa-chatbot-RAG`)](./qa-chatbot-RAG/)
 
 An end-to-end, hardened enterprise Quality Assurance Retrieval-Augmented Generation ecosystem featuring a **Vite + React Glassmorphic UI** wired directly to **Qdrant Vector Engine** and **Vercel AI Gateway**.
 
@@ -86,7 +99,7 @@ An end-to-end, hardened enterprise Quality Assurance Retrieval-Augmented Generat
 
 ---
 
-### 6. [QA Mentor ChatBot (`QA_Mentor_ChatBot`)](./QA_Mentor_ChatBot/)
+### 7. [QA Mentor ChatBot (`QA_Mentor_ChatBot`)](./QA_Mentor_ChatBot/)
 
 An interactive QA mentorship system designed to guide, review, and assist users in Software Quality Assurance practices.
 
@@ -98,7 +111,7 @@ An interactive QA mentorship system designed to guide, review, and assist users 
 
 ---
 
-### 7. [STLC Agentic Platform (`stlc-agent-tool`)](./stlc-agent-tool/)
+### 8. [STLC Agentic Platform (`stlc-agent-tool`)](./stlc-agent-tool/)
 
 A centralized, AI-driven automation orchestrator for modern Software Testing Life Cycles (STLC) utilizing LangGraph for multi-agent workflows.
 
@@ -111,7 +124,7 @@ A centralized, AI-driven automation orchestrator for modern Software Testing Lif
 
 ---
 
-### 8. [CrewAI Projects (`crewai_projects`)](./crewai_projects/)
+### 9. [CrewAI Projects (`crewai_projects`)](./crewai_projects/)
 
 A dedicated workspace for enterprise CrewAI multi-agent automation workflows.
 
@@ -128,11 +141,13 @@ A dedicated workspace for enterprise CrewAI multi-agent automation workflows.
 
 Each project maintains its own dedicated setup guide and dependencies. To get started:
 
-1. **For Production RAG Generation & Evaluation**:
+1. **For LangChain Agents (Content Writer Agent)**:
+   Navigate to [`langchain_projects/Content_writer_agent`](./langchain_projects/Content_writer_agent/), configure `config/.env` (or copy from `config/.env.example`), and execute with `uv run main.py` or standard `python main.py`.
+2. **For Production RAG Generation & Evaluation**:
    Navigate to [`langchain-hybrid-rag-bm25`](./langchain-hybrid-rag-bm25/) and follow the [SETUP.md](./langchain-hybrid-rag-bm25/SETUP.md) instructions using `uv`.
-2. **For CrewAI Multi-Agent Workflows**:
+3. **For CrewAI Multi-Agent Workflows**:
    Navigate to [`crewai_projects/pro1_flaky_testcase_locator_agent`](./crewai_projects/pro1_flaky_testcase_locator_agent/), run `uv sync`, copy `config/.env.example` to `config/.env`, and execute `uv run main.py`.
-3. **For Langflow Visual Workflows**:
+4. **For Langflow Visual Workflows**:
    Launch your local instance of [Langflow](https://github.com/langflow-ai/langflow) (`pip install langflow && langflow run`) and import any JSON workflow from [`langflow-qa-agents`](./langflow-qa-agents/).
 
 ---
