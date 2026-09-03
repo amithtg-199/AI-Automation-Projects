@@ -106,7 +106,7 @@ If the primary provider faces rate-limits, downtime, or network failures, reques
 Clone the repository and navigate to the project directory:
 
 ```bash
-cd langchain_module_projects/langgraph_financial_forcast_analysis
+cd langchain_module_projects/langgraph_financial_forecast_analysis
 ```
 
 Create a virtual environment and install dependencies:
