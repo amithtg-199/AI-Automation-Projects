@@ -166,6 +166,6 @@ workflow.add_edge("Auditor", "Verification")
 workflow.add_edge("Verification", "Result")
 workflow.add_edge("Result", END)
 
-# Complie
+# Compile state machine
 finance_audit_agent = workflow.compile()
 

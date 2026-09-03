@@ -60,7 +60,7 @@ flowchart TD
 ## 📂 Project Structure
 
 ```text
-langgraph_financial_forcast_analysis/
+langgraph_financial_forecast_analysis/
 ├── agents/
 │   ├── __init__.py
 │   └── financial_researcher_agent.py   # LangGraph StateGraph (Auditor, Verification, Result nodes)
