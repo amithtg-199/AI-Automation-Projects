@@ -1,0 +1,7 @@
+langchain
+langchain-core
+langchain-mistralai
+langchain-openai 
+langchain-anthropic 
+langchain-google-genai 
+dotenv

@@ -1,0 +1,48 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables & secrets (CRITICAL)
+.env
+.env.*
+!.env.example
+.python-version
+
+# CrewAI & Local Memory / Vector DBs
+.crewai/
+db/
+*.db
+*.sqlite3
+chroma/
+qdrant_data/
+
+# Playwright execution artifacts
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# Pytest & Allure reporting
+.pytest_cache/
+allure-results/
+allure-report/
+.coverage
+htmlcov/
+*.lcov
+
+# Virtual environments & package managers
+.venv/
+venv/
+ENV/
+.uv/
+
+# Local JSON results & agent outputs
+result*.json
+*.log
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
