@@ -21,6 +21,7 @@ AI-Automation-Projects/
 ├── langchain-rag-test-case-legacy-docs/   # Legacy RAG Implementation (Poetry reference)
 ├── langflow-agents/                       # Custom Langflow Components & API Contract Validators
 ├── langflow-qa-agents/                    # Curated Langflow Low-Code Agent Workflows (.json)
+├── llm_eval_projects/                     # LLM Evaluation Suite (DeepEval, Confident AI, Gemini Judge)
 ├── qa-chatbot-RAG/                        # Full Adaptive Qdrant RAG Engine & Vite Glassmorphic UI
 ├── QA_Mentor_ChatBot/                     # Interactive QA Mentorship System & Architecture
 └── stlc-agent-tool/                       # STLC Agentic Platform (LangGraph, FastAPI, React)
@@ -143,6 +144,18 @@ A dedicated workspace for enterprise CrewAI multi-agent automation workflows.
 
 ---
 
+### 10. [LLM Evaluation Projects (`llm_eval_projects`)](./llm_eval_projects/)
+
+An enterprise-ready LLM evaluation suite leveraging **DeepEval**, **Confident AI**, and **LLM-as-a-Judge** scoring metrics powered by **Google Gemini**.
+
+* **Included Modules**:
+  * **[`deepeval_baisc`](./llm_eval_projects/deepeval_baisc/)**:
+    * **Automated Unit Testing with Pytest**: Integrates DeepEval's `assert_test` directly into Pytest test execution to quantitatively benchmark model outputs against golden reference datasets.
+    * **LLM-as-a-Judge (`Gemini 3.6 Flash`)**: Uses Google Gemini to score evaluation metrics such as **Answer Relevancy** with configurable passing thresholds (`0.8`), detailed reasoning, latency measurements, and token cost tracking.
+    * **Cloud Observability Integration**: Ready for seamless test run synchronization with **Confident AI** for historical regression monitoring and evaluation analytics.
+
+---
+
 ## Quick Start Guide
 
 Each project maintains its own dedicated setup guide and dependencies. To get started:
@@ -157,6 +170,8 @@ Each project maintains its own dedicated setup guide and dependencies. To get st
    Navigate to [`crewai_projects/pro1_flaky_testcase_locator_agent`](./crewai_projects/pro1_flaky_testcase_locator_agent/), run `uv sync`, copy `config/.env.example` to `config/.env`, and execute `uv run main.py`.
 5. **For Langflow Visual Workflows**:
    Launch your local instance of [Langflow](https://github.com/langflow-ai/langflow) (`pip install langflow && langflow run`) and import any JSON workflow from [`langflow-qa-agents`](./langflow-qa-agents/).
+6. **For LLM Evaluation Suites**:
+   Navigate to [`llm_eval_projects/deepeval_baisc`](./llm_eval_projects/deepeval_baisc/), copy `configs/.env.example` to `configs/.env`, supply your `GOOGLE_API_KEY`, and run `pytest basic_deepeval.py` or `deepeval test run basic_deepeval.py`.
 
 ---
 

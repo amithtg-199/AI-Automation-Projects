@@ -1,9 +1,3 @@
-**/langflow-data/
-**/__pycache__/
-*.pyc
-.DS_Store
-mcp_config.json
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -16,26 +10,13 @@ configs/.env
 configs/.env.*
 !.env.example
 !configs/.env.example
+.python-version
 
-# DeepEval Cache & Telemetry
+# DeepEval Cache & Local Run Logs
 .deepeval/
 .deepeval-cache.json
 .latest_run_full.json
 .latest_test_run.json
-
-# CrewAI & Local Memory / Vector DBs
-.crewai/
-db/
-*.db
-*.sqlite3
-chroma/
-qdrant_data/
-
-# Playwright execution artifacts
-test-results/
-playwright-report/
-blob-report/
-playwright/.cache/
 
 # Pytest & Allure reporting
 .pytest_cache/
@@ -51,7 +32,7 @@ venv/
 ENV/
 .uv/
 
-# Local JSON results & agent outputs
+# Local JSON results & test outputs
 result*.json
 *.log
 
