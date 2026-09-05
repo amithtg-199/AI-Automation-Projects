@@ -165,6 +165,8 @@ from deepeval.test_case import LLMTestCase
 from deepeval.models import GeminiModel
 from dotenv import load_dotenv, set_key, dotenv_values
 from pathlib import Path
+import pytest
+import os
 
 # 2. Config & Environment Initialization
 CONFIG_FOLDER = Path(__file__).resolve().parent / "configs"
@@ -193,7 +195,11 @@ test_case = LLMTestCase(
     expected_output="Sundar Pichai"
 )
 
-# 6. Assertion
+# 6. Assertion & Pre-flight API Key Guard
 def test_llm_output():
+    # Check if API key is configured; fail gracefully if missing
+    if not os.getenv("GOOGLE_API_KEY"):
+        pytest.fail("API Key is not configured in .env")
+
     assert_test(test_case=test_case, metrics=[metrics])
 ```
