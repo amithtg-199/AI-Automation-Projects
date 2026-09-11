@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeepEval Framework — Quality & Security Evaluation Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Top Header -->
+    <header class="app-header">
+        <div class="header-container">
+            <div class="brand">
+                <div class="logo-icon">⚡</div>
+                <div class="brand-text">
+                    <h1>DeepEval Framework <span>v4.2</span></h1>
+                    <p class="subtitle">Subsystem A (Chatbot) + Subsystem B (RAG Explorer) Metric Evaluation</p>
+                </div>
+            </div>
+
+            <!-- API Configuration Controls -->
+            <div class="config-bar">
+                <div class="key-inputs">
+                    <div class="input-group">
+                        <label for="geminiKey">Gemini API Key</label>
+                        <input type="password" id="geminiKey" placeholder="AIzaSy..." value="" autocomplete="off">
+                    </div>
+                    <div class="input-group">
+                        <label for="mistralKey">Mistral API Key</label>
+                        <input type="password" id="mistralKey" placeholder="mis_..." value="" autocomplete="off">
+                    </div>
+                </div>
+
+                <div class="select-group">
+                    <label for="providerSelect">LLM Provider</label>
+                    <select id="providerSelect">
+                        <option value="gemini">Google Gemini</option>
+                        <option value="mistral">Mistral AI</option>
+                        <option value="groq">Groq Qwen</option>
+                        <option value="mock">Offline Mock</option>
+                    </select>
+                </div>
+
+                <div class="select-group">
+                    <label for="modelSelect">LLM Model</label>
+                    <select id="modelSelect">
+                        <option value="gemini-3.6-flash">gemini-3.6-flash (Recommended)</option>
+                        <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+                        <option value="gemini-2.0-flash">gemini-2.0-flash</option>
+                        <option value="gemini-1.5-pro">gemini-1.5-pro</option>
+                        <option value="mistral-small-latest">mistral-small-latest</option>
+                        <option value="mistral-large-latest">mistral-large-latest</option>
+                    </select>
+                </div>
+
+                <button id="saveConfigBtn" class="btn btn-secondary">Save Keys</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+
+        <!-- Controls & Summary Stats Bar -->
+        <section class="action-bar">
+            <div class="action-buttons">
+                <button id="runAllBtn" class="btn btn-primary btn-lg">
+                    <span class="btn-icon">▶</span> Run All 25 Metrics
+                </button>
+                <button id="refreshBtn" class="btn btn-outline">
+                    <span class="btn-icon">🔄</span> Refresh Grid
+                </button>
+            </div>
+
+            <!-- Stats Counter Pills -->
+            <div class="stats-pills">
+                <div class="stat-pill stat-total">
+                    <span class="stat-label">Total Metrics</span>
+                    <span class="stat-value" id="totalMetricsCount">25</span>
+                </div>
+                <div class="stat-pill stat-pass">
+                    <span class="stat-label">Passed</span>
+                    <span class="stat-value" id="passedCount">0</span>
+                </div>
+                <div class="stat-pill stat-fail">
+                    <span class="stat-label">Failed</span>
+                    <span class="stat-value" id="failedCount">0</span>
+                </div>
+                <div class="stat-pill stat-score">
+                    <span class="stat-label">Avg Score</span>
+                    <span class="stat-value" id="avgScoreVal">0.00</span>
+                </div>
+                <div class="stat-pill stat-tokens">
+                    <span class="stat-label">Token Meter</span>
+                    <span class="stat-value" id="totalTokensVal">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Category Filter Pills -->
+        <section class="filter-section">
+            <div class="filter-pills" id="filterPills">
+                <button class="filter-pill active" data-category="all">All Metrics (25)</button>
+                <button class="filter-pill" data-category="Chatbot">Chatbot (11)</button>
+                <button class="filter-pill" data-category="RAG Retrieval">RAG Retrieval (3)</button>
+                <button class="filter-pill" data-category="RAG Generation">RAG Generation (4)</button>
+                <button class="filter-pill" data-category="Security & Safety">Security & Safety (7)</button>
+            </div>
+        </section>
+
+        <!-- Metrics Grid (4-Column Layout) -->
+        <section class="metrics-grid" id="metricsGrid">
+            <!-- Dynamic Cards Injected Here -->
+            <div class="loading-state">
+                <div class="spinner"></div>
+                <p>Loading DeepEval evaluation catalog...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+        <p>DeepEval Framework UI · Enterprise AI Quality & Security Suite · Ports: 8201 (Chatbot) | 8202 (RAG) | 8203 (Dashboard)</p>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
